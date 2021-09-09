@@ -1,3 +1,5 @@
+#pragma once 
+
 template<typename T>
 void swap(T& ls, T& rs){
     T temp = ls;

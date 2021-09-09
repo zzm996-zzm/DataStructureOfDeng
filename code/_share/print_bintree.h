@@ -1,11 +1,3 @@
-/******************************************************************************************
- * Data Structures in C++
- * ISBN: 7-302-33064-6 & 7-302-33065-3 & 7-302-29652-2 & 7-302-26883-3
- * Junhui DENG, deng@tsinghua.edu.cn
- * Computer Science & Technology, Tsinghua University
- * Copyright (c) 2003-2020. All rights reserved.
- ******************************************************************************************/
-
 #pragma once
 
 /******************************************************************************************
@@ -23,6 +15,15 @@
 template <typename T> //元素类型
 void UniPrint::p ( BinTree<T> & bt ) { //引用
    printf ( "%s[%p]*%d:\n", typeid(bt).name(), reinterpret_cast<unsigned*>(&bt), bt.size() ); //基本信息
+   Bitmap* branchType = new Bitmap; //记录当前节点祖先的方向
+   printBinTree ( bt.root(), -1, ROOT, branchType ); //树状结构
+   //release ( branchType ); 
+   printf ( "\n" );
+}
+
+template <typename T> //元素类型
+void UniPrint::p ( BST<T> & bt ) { //引用
+   printf ( "%s[%p]*%d:\n", typeid ( bt ).name(), reinterpret_cast<unsigned*>(&bt), bt.size() ); //基本信息
    Bitmap* branchType = new Bitmap; //记录当前节点祖先的方向
    printBinTree ( bt.root(), -1, ROOT, branchType ); //树状结构
    //release ( branchType ); 

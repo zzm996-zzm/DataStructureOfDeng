@@ -74,7 +74,7 @@ inline bool IsLChild(const BinNode<T>& x){
 }
 
 template<typename T>
-inline bool LSRChild(const BinNode<T>& x){
+inline bool IsRChild(const BinNode<T>& x){
     return !IsRoot(x) && (&x == x.parent->rc);
 }
 
