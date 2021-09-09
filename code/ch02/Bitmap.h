@@ -5,16 +5,16 @@
 #include <cstdio>
 #include <memory.h>
 
-class Bitmap { //λͼBitmap��
+class Bitmap { 
 private:
-   char* M; int N; //����ͼ����ŵĿռ�M[]������ΪN*sizeof(char)*8����
+   char* M; int N; 
 protected:
    void init ( int n ) { M = new char[N = ( n + 7 ) / 8]; memset ( M, 0, N ); }
 public:
-   Bitmap ( int n = 8 ) { init ( n ); } //��ָ����Ĭ�Ϲ�ģ��������ͼ��Ϊ������ʱѡ�ý�С��Ĭ��ֵ��
-   Bitmap ( char* file, int n = 8 ) //��ָ����Ĭ�Ϲ�ģ����ָ���ļ��ж�ȡ����ͼ
+   Bitmap ( int n = 8 ) { init ( n ); } 
+   Bitmap ( char* file, int n = 8 ) 
    {  init ( n ); FILE* fp = fopen ( file, "r" ); fread ( M, sizeof ( char ), N, fp ); fclose ( fp );  }
-   ~Bitmap() { delete [] M; M = NULL; } //����ʱ�ͷű���ͼ�ռ�
+   ~Bitmap() { delete [] M; M = NULL; } 
 
    void set   ( int k ) { expand ( k );        M[k >> 3] |=   ( 0x80 >> ( k & 0x07 ) ); }
    void clear ( int k ) { expand ( k );        M[k >> 3] &= ~ ( 0x80 >> ( k & 0x07 ) ); }

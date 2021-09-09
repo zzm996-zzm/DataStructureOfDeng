@@ -283,9 +283,6 @@ void Vector<T>::merge(Rank lo, Rank mi, Rank hi){
     delete []B;
 }
 
-template<typename T> struct Increase{
-    virtual void operator() (T& e) { e++; }
-};
 
 template<typename T> void increase(Vector<T>& V){
     V.traverse(Increase<T>());

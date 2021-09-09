@@ -1,7 +1,12 @@
-#ifndef DCSAPP_UTIL
-#define DCSAPP_UTIL
+#include "comparator.hpp"
+#include "rand.h" 
+#include "swap.hpp"  
+#include "print.h"
+template <typename T> struct Double {  
+    virtual void operator() ( T& e ) { e *= 2; }  
+};
 
-#define max(a,b) (((a) > (b)) ? (a) : (b))
-#define min(a,b) (((a) < (b)) ? (a) : (b))
+template<typename T> struct Increase{
+    virtual void operator() (T& e) { e++; }
+};
 
-#endif

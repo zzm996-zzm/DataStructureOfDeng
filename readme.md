@@ -2,6 +2,6 @@
 
 ![](./pic/cover.jpg)
 
-- [1. 绪论](./Impl/ch01/readme.md)  
-- [2. 向量](./Impl/ch02/readme.md)  
+- [1. 绪论](./code/ch01/readme.md)  
+- [2. 向量](./code/ch02/readme.md)  
 

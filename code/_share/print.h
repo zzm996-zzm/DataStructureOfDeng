@@ -7,6 +7,7 @@
 static void print ( char* x ) {  printf ( " %s", x ? x : "<NULL>" );  } //字符串特别处理
 static void print ( const char* x ) {  printf ( " %s", x ? x : "<NULL>" );  } //字符串特别处理
 
+
 class UniPrint {
 public:
    static void p ( int );
@@ -26,14 +27,18 @@ void UniPrint::p ( float e ) { printf ( " %4.3f", e ); }
 void UniPrint::p ( double e ) { printf ( " %4.3f", e ); }
 void UniPrint::p ( char e ) { printf ( " %c", ( 31 < e ) && ( e < 128 ) ? e : '$' ); }
 
+template <typename T> static void print ( T& x ) {  UniPrint::p ( x );  }
+template <typename T> static void print ( const T& x ) {  UniPrint::p ( x );  } //for Stack
 template <typename T> static void print ( T* x ) { 
    if(x)  
       print(*x); 
    else
       printf("<NULL>\n");
 }
-template <typename T> static void print ( T& x ) {  UniPrint::p ( x );  }
-template <typename T> static void print ( const T& x ) {  UniPrint::p ( x );  } //for Stack
+
+template<typename T> struct Print{
+    virtual void operator()(T& e) {  print(e); }
+};
 
 #include "print_traversable.hpp"
 #include "print_binNode.h"  
