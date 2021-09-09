@@ -20,7 +20,7 @@ public:
     BinNode<T>* attachAsRC(BinNode<T>* x, BinTree<T>*& S);
     int remove(BinNode<T>* x);
     BinTree<T>* secede(BinNode<T>* x);
-    template<typename VST> void travLevel(VST& visit){  if(_root) _root->travLevel(visit); }
+    //template<typename VST> void travLevel(VST& visit){  if(_root) _root->travLevel(visit); }
     template<typename VST> void travPre(VST& visit){  if(_root) _root->travPre(visit); }
     template<typename VST> void travIn(VST& visit){  if(_root) _root->travIn(visit); }
     template<typename VST> void travPost(VST& visit){  if(_root) _root->travPost(visit); }

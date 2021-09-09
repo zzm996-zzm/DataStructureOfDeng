@@ -1,3 +1,7 @@
+#pragma once
+
+#include "../ch04/Stack.hpp"
+
 #define FromParentTo(x) \
     (IsRoot(x)?_root:(IsLChild(x)?(x).parent->lc:(x).parent->rc))
 
@@ -33,10 +37,20 @@ struct BinNode{
     BinNode<T>* insertAsLC(T const&);
     BinNode<T>* insertAsRC(T const&);
     BinNode<T>* succ();
-    template <typename VST> void travLevel(VST&);
-    template <typename VST> void travPre(VST&);
-    template <typename VST> void travIn(VST&);
-    template <typename VST> void travPost(VST&);
+
+    /*
+    template <typename VST> void travLevel(VST&){ travLevel(this, VST); }
+    template <typename VST> void travLevel(BinNode<T>* x, VST&);
+    */
+    template <typename VST>  void travPre(BinNode<T>* x, VST&);
+    template <typename VST> void travPre(VST& visit){ travPre(this, visit); }
+    
+    template <typename VST> void travIn(BinNode<T>* x, VST&);
+    template <typename VST> void travIn(VST& visit) { travIn(this, visit); }
+    
+    template <typename VST> void travPost(BinNode<T>* x, VST&);
+    template <typename VST> void travPost(VST& visit){ travPost(this, visit); }
+    
 
     bool operator< (BinNode const& bn)  { return data < bn.data; }
     bool operator> (BinNode const& bn)  { return data > bn.data; }
@@ -131,15 +145,86 @@ BinNode<T>::succ(){
     return s;
 }
 
-/*
-template<typename T> 
-template <typename VST>
-void BinNode<T>::travIn(VST& visit){
-
+template<typename T , typename VST>
+static void visitAlongLeftBranch(BinNode<T>* x, VST& visit, Stack<BinNode<T>*>& S){
+    while(x){
+        visit(x->data);
+        S.push(x->rc);
+        x = x->lc;
+    }
 }
 
-template<typename T , typename VST>
-static void visitAlongLeftBranch(BinNode<T>* x, VST& visit, Stack<BinNode*>& S){
+template<typename T>
+template<typename VST>
+void BinNode<T>::travPre(BinNode<T>* x, VST& visit){
+    Stack<BinNode<T>*> S;
+    while(true){
+        visitAlongLeftBranch(x, visit, S);
+        if(S.empty()) break;
+        x = S.pop();
+    }
+}
 
+template<typename T>
+static void goAlongLeftBranch(BinNode<T>* x, Stack<BinNode<T>*>& S){
+    while(x) {  
+        S.push(x); 
+        x = x->lc; 
+    }
+}
+
+
+template<typename T>
+template<typename VST>
+void BinNode<T>::travIn(BinNode<T>* x, VST& visit){
+    Stack<BinNode*> S;
+    while(true){
+        goAlongLeftBranch(x, S);
+        if(S.empty()) break;
+        x = S.pop();
+        visit(x->data);
+        x = x->rc;
+    }
+}
+
+template<typename T>
+static void gotoHLVFL(Stack<BinNode<T>*>& S){
+    while(BinNode<T>* x = S.top())
+        if(HasLChild(*x)){
+            if(HasRChild(*x)) 
+                S.push(x->rc);
+            S.push(x->lc);
+        } else {
+            S.push(x->rc);
+        }
+    S.pop();
+}
+
+template<typename T>
+template<typename VST>
+void 
+BinNode<T>::travPost(BinNode<T>* x, VST& visit){
+    Stack<BinNode*> S;
+    if(x) S.push(x);
+    while(!S.empty()){
+        if(S.top()!=x->parent)
+            gotoHLVFL(S);
+        x = S.pop();
+        visit(x->data);
+    }
+}
+
+/*
+template<typename T>
+template<typename VST>
+void BinNode<T>::travLevel(VST& visit){
+    
 }
 */
+
+
+
+
+
+
+
