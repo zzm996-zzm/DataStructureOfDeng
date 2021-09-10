@@ -4,6 +4,7 @@
 
 #include "../ch05/BinTree.hpp"
 #include "../ch07/BST.hpp"
+#include "../ch07/AVL.hpp"  
 
 static void print ( char* x ) {  printf ( " %s", x ? x : "<NULL>" );  } //字符串特别处理
 static void print ( const char* x ) {  printf ( " %s", x ? x : "<NULL>" );  } //字符串特别处理
@@ -19,6 +20,7 @@ public:
    template <typename T> static void p ( BinNode<T>& ); //BinTree节点
    template <typename T> static void p ( BinTree<T>& ); //二叉树
    template <typename T> static void p ( BST<T>& ); //BST
+   template <typename T> static void p ( AVL<T>& ); //AVL
    template <typename T> static void p ( T& ); //向量、列表等支持traverse()遍历操作的线性结构
    template <typename T> static void p ( T* s ) //所有指针
    {  s ? p ( *s ) : print ( "<NULL>" ); } //统一转为引用

@@ -6,7 +6,7 @@
 template<typename T>
 class BST: public BinTree<T> {
 protected:
-    BinNode<T>* _hot;
+    BinNode<T>* _hot{nullptr};
     BinNode<T>* connect34(
         BinNode<T>*, BinNode<T>*, BinNode<T>*,
         BinNode<T>*, BinNode<T>*, BinNode<T>*, BinNode<T>*
@@ -19,16 +19,13 @@ public:
 };
 
 template<typename T>
-static BinNode<T>* & searchIn(BinNode<T>*& v, const T& e, BinNode<T>*& hot){
-    if(!v || (e == v->data)) return v;
-    hot = v;
-    return searchIn(((e < v->data)?v->lc:v->rc), e, hot);
-}
-
-template<typename T>
 BinNode<T>*&
 BST<T>::search(const T& e){
-    return searchIn(this->_root, e, _hot = nullptr);
+    if ( !this->_root || e == this->_root->data ) { _hot = NULL; return this->_root; } //在树根v处命中
+    for ( _hot = this->_root; ; ) { //否则，自顶而下
+        BinNode<T>* & c = ( e < _hot->data ) ? _hot->lc : _hot->rc; //确定方向
+        if ( !c || e == c->data ) return c; _hot = c; //命中返回，或者深入一层
+    } 
 }
 
 template<typename T>
@@ -72,4 +69,42 @@ bool BST<T>::remove(const T& e){
     this->_size--;
     this->updateHeightAbove(_hot);
     return true;
+}
+
+template<typename T>
+BinNode<T>* 
+BST<T>::connect34(
+    BinNode<T>* a, BinNode<T>* b, BinNode<T>* c,
+    BinNode<T>* T0, BinNode<T>* T1, BinNode<T>* T2, BinNode<T>* T3
+){
+    a->lc = T0; if ( T0 ) T0->parent = a;
+    a->rc = T1; if ( T1 ) T1->parent = a; this->updateHeight ( a );
+    c->lc = T2; if ( T2 ) T2->parent = c;
+    c->rc = T3; if ( T3 ) T3->parent = c; this->updateHeight ( c );
+    b->lc = a; a->parent = b;
+    b->rc = c; c->parent = b; this->updateHeight ( b );
+    return b; //该子树新的根节点
+}
+
+template<typename T>
+BinNode<T>* 
+BST<T>::rotateAt(BinNode<T>* v){
+    /*DSA*/if ( !v ) { printf ( "\a\nFail to rotate a null node\n" ); exit ( -1 ); }
+   BinNode<T>* p = v->parent; BinNode<T>* g = p->parent; //视v、p和g相对位置分四种情况
+   if ( IsLChild ( *p ) ) /* zig */
+      if ( IsLChild ( *v ) ) { /* zig-zig */ //*DSA*/printf("\tzIg-zIg: ");
+         p->parent = g->parent; //向上联接
+         return connect34 ( v, p, g, v->lc, v->rc, p->rc, g->rc );
+      } else { /* zig-zag */  //*DSA*/printf("\tzIg-zAg: ");
+         v->parent = g->parent; //向上联接
+         return connect34 ( p, v, g, p->lc, v->lc, v->rc, g->rc );
+      }
+   else  /* zag */
+      if ( IsRChild ( *v ) ) { /* zag-zag */ //*DSA*/printf("\tzAg-zAg: ");
+         p->parent = g->parent; //向上联接
+         return connect34 ( g, p, v, g->lc, p->lc, v->lc, v->rc );
+      } else { /* zag-zig */  //*DSA*/printf("\tzAg-zIg: ");
+         v->parent = g->parent; //向上联接
+         return connect34 ( g, v, p, g->lc, v->lc, v->rc, p->rc );
+      }
 }

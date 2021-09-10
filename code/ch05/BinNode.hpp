@@ -2,8 +2,9 @@
 
 #include "../ch04/Stack.hpp"
 
+
 #define FromParentTo(x) \
-    (IsRoot(x)?_root:(IsLChild(x)?(x).parent->lc:(x).parent->rc))
+    (IsRoot(x)?this->_root:(IsLChild(x)?(x).parent->lc:(x).parent->rc))
 
 template<typename T>
 T max(T l, T r){
@@ -108,6 +109,29 @@ inline bool IsLeaf(const BinNode<T>& x){
     return !HasChild(x);
 }
 
+//AVL
+template<typename T>
+inline bool Balanced(const BinNode<T>& x){
+    return stature(x.lc) == stature(x.rc);
+}
+
+template<typename T>
+inline int BalFac(const BinNode<T>& x){
+    return stature(x.lc) - stature(x.rc);
+}
+
+template<typename T>
+inline bool AvlBalanced(const BinNode<T>& x){
+    return -2 < BalFac(x) && BalFac(x) < 2;
+}
+
+//rebalance
+template<typename T>
+inline BinNode<T>* tallerChild(const BinNode<T>* x){
+    return stature(x->lc) > stature(x->rc)?x->lc:
+           stature(x->lc) < stature(x->rc)?x->rc:
+           IsLChild(*x)?x->lc:x->rc;
+}
 //Operations
 template<typename T>
 inline BinNode<T>* sibling(const BinNode<T>*& x){
@@ -221,6 +245,7 @@ BinNode<T>::travPost(BinNode<T>* x, VST& visit){
         visit(x->data);
     }
 }
+
 
 /*
 template<typename T>
