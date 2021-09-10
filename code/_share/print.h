@@ -6,6 +6,8 @@
 #include "../ch07/BST.hpp"
 #include "../ch07/AVL.hpp"  
 
+RBColor color = RBColor::RED;
+
 static void print ( char* x ) {  printf ( " %s", x ? x : "<NULL>" );  } //字符串特别处理
 static void print ( const char* x ) {  printf ( " %s", x ? x : "<NULL>" );  } //字符串特别处理
 
@@ -17,7 +19,7 @@ public:
    static void p ( double );
    static void p ( char );
    
-   template <typename T> static void p ( BinNode<T>& ); //BinTree节点
+   template <typename T> static void p ( BinNode<T>&); //BinTree节点
    template <typename T> static void p ( BinTree<T>& ); //二叉树
    template <typename T> static void p ( BST<T>& ); //BST
    template <typename T> static void p ( AVL<T>& ); //AVL
@@ -26,7 +28,7 @@ public:
    {  s ? p ( *s ) : print ( "<NULL>" ); } //统一转为引用
 }; //UniPrint
 
-void UniPrint::p ( int e ) { printf ( " %04d", e ); }
+void UniPrint::p ( int e ) { if(color == RBColor::RED) printf ( "%04d", e ); }
 void UniPrint::p ( float e ) { printf ( " %4.3f", e ); }
 void UniPrint::p ( double e ) { printf ( " %4.3f", e ); }
 void UniPrint::p ( char e ) { printf ( " %c", ( 31 < e ) && ( e < 128 ) ? e : '$' ); }

@@ -2,9 +2,10 @@
 
 #include "../ch04/Stack.hpp"
 
-
+/*
 #define FromParentTo(x) \
     (IsRoot(x)?this->_root:(IsLChild(x)?(x).parent->lc:(x).parent->rc))
+*/
 
 template<typename T>
 T max(T l, T r){
@@ -245,7 +246,6 @@ BinNode<T>::travPost(BinNode<T>* x, VST& visit){
         visit(x->data);
     }
 }
-
 
 /*
 template<typename T>

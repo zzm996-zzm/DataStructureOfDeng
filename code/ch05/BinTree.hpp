@@ -2,6 +2,7 @@
 
 #include "BinNode.hpp"  
 
+
 template<typename T> 
 class BinTree {
 protected:
@@ -9,6 +10,7 @@ protected:
     BinNode<T>* _root;
     virtual int updateHeight(BinNode<T>* x);
     void updateHeightAbove(BinNode<T>* x);
+    BinNode<T>*& FromParentTo(const BinNode<T>& node);
 public:
     BinTree():_size(0), _root(nullptr) {}
     ~BinTree() {if(_size > 0) remove(_root); }
@@ -105,8 +107,19 @@ static int removeAt(BinNode<T>* x){
 }
 
 template<typename T>
+BinNode<T>*& 
+BinTree<T>::FromParentTo(const BinNode<T>& node){
+    if(IsRoot(node))
+        return this->_root;
+    else if(IsLChild(node))
+        return node.parent->lc;
+    else 
+        return node.parent->rc;
+}
+
+template<typename T>
 int BinTree<T>::remove(BinNode<T>* x){
-    FromParentTo(*x) = nullptr;
+    this->FromParentTo(*x) = nullptr;
     updateHeightAbove(x->parent);
     int n = removeAt(x);
     _size -= n;
@@ -116,7 +129,7 @@ int BinTree<T>::remove(BinNode<T>* x){
 template<typename T>
 BinTree<T>* 
 BinTree<T>::secede(BinNode<T>* x){
-    FromParentTo(*x) = nullptr;
+    this->FromParentTo(*x) = nullptr;
     updateHeightAbove(x->parent);
     BinTree<T>* S = new BinTree<T>();
     S->_root = x;
