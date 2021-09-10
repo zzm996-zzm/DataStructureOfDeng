@@ -11,9 +11,9 @@ int main(int argc, char** argv){
     int times = atoi(argv[1]);
 
 
-    AVL<int> bst;
+    AVL<double> bst;
     for(int i = 0; i < times; i++){
-        bst.insert(i);
+        bst.insert(dice(1000.0));
     }
 
     print(bst);
