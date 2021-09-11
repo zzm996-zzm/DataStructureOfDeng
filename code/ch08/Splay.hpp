@@ -42,7 +42,7 @@ BinNode<T>* Splay<T>::splay(BinNode<T>* v){
             }
         else if(IsRChild(*p)){//zag-zag
                 attachAsRChild(g, p->lc);  attachAsRChild(p, v->lc);
-                attachAsLChild(p, g);      attachAsRChild(v, p);
+                attachAsLChild(p, g);      attachAsLChild(v, p);
         } else {              //zag-zig
                 attachAsRChild(p, v->lc);  attachAsLChild(g, v->rc);
                 attachAsRChild(v, g);      attachAsLChild(v, p);
