@@ -19,13 +19,16 @@ public:
 };
 
 template<typename T>
+static BinNode<T>*& searchIn(BinNode<T>*& v, const T& e, BinNode<T>*& hot){
+    if(!v || (e == v->data)) return v;
+    hot = v;
+    return searchIn(((e < v->data)?v->lc:v->rc), e, hot);
+}
+
+template<typename T>
 BinNode<T>*&
 BST<T>::search(const T& e){
-    if ( !this->_root || e == this->_root->data ) { _hot = NULL; return this->_root; } //在树根v处命中
-    for ( _hot = this->_root; ; ) { //否则，自顶而下
-        BinNode<T>* & c = ( e < _hot->data ) ? _hot->lc : _hot->rc; //确定方向
-        if ( !c || e == c->data ) return c; _hot = c; //命中返回，或者深入一层
-    } 
+    return searchIn(this->_root, e, this->_hot);
 }
 
 template<typename T>
@@ -92,7 +95,7 @@ BST<T>::rotateAt(BinNode<T>* v){
     /*DSA*/if ( !v ) { printf ( "\a\nFail to rotate a null node\n" ); exit ( -1 ); }
    BinNode<T>* p = v->parent; BinNode<T>* g = p->parent; //视v、p和g相对位置分四种情况
    if ( IsLChild ( *p ) ) /* zig */
-      if ( IsLChild ( *v ) ) { /* zig-zig */ //*DSA*/printf("\tzIg-zIg: ");
+      if ( IsLChild ( *v ) ) { /* zig-zig */ 
          p->parent = g->parent; //向上联接
          return connect34 ( v, p, g, v->lc, v->rc, p->rc, g->rc );
       } else { /* zig-zag */  //*DSA*/printf("\tzIg-zAg: ");
@@ -100,7 +103,7 @@ BST<T>::rotateAt(BinNode<T>* v){
          return connect34 ( p, v, g, p->lc, v->lc, v->rc, g->rc );
       }
    else  /* zag */
-      if ( IsRChild ( *v ) ) { /* zag-zag */ //*DSA*/printf("\tzAg-zAg: ");
+      if ( IsRChild ( *v ) ) { /* zag-zag */
          p->parent = g->parent; //向上联接
          return connect34 ( g, p, v, g->lc, p->lc, v->lc, v->rc );
       } else { /* zag-zig */  //*DSA*/printf("\tzAg-zIg: ");

@@ -40,8 +40,25 @@ int main(){
 
 ![](./pic/AVL_random_double.png)  
 
+zig zig:  
+
+![](./pic/zig_zig.png)  
+
+zig zag:  
+
+![](./pic/zig_zag.png)  
+
+zag zag:  
+
+![](./pic/zag_zag.png)  
+
+zag zig:  
+
+![](./pic/zag_zig.png)  
+
 
 > 因AVL的理想平衡，每个节点之间的差严格不能大与等于2，所以每次插入删除都要花费时间进行旋转调整，但作为回报，AVL有平衡树中最快的查询性能。  
+
 
 
 
