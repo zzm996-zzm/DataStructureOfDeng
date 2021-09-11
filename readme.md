@@ -7,5 +7,6 @@
 - [4. 栈与队列](./code/ch04/readme.md) 
 - [5. 二叉树](./code/ch05/readme.md)  
 - [7. 二叉搜索树](./code/ch07/readme.md)  
+- [8. 高级搜索树](./code/ch08/readme.md)  
 
 
