@@ -1,4 +1,4 @@
-#include "Fibo.hh"
+#include "Fibo.hpp"
 #include <iostream>
 #include <cassert>
 

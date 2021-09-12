@@ -1,3 +1,5 @@
+#pragma once
+
 using Rank = int;
 #define DEFAULT_CAPACITY 3
 #include <random>
@@ -202,7 +204,7 @@ Rank Vector<T>::search(T const& e, Rank lo, Rank hi) const{
 
 template<typename T> 
 Rank Vector<T>::binSearch (T* A, T const& e, Rank lo, Rank hi) const{
-    printf("BinSearch\n");
+    //printf("BinSearch\n");
     while(lo < hi){
         Rank mi = (lo + hi) >> 1;
         (e < A[mi])? hi = mi:lo = mi+1;
@@ -212,16 +214,13 @@ Rank Vector<T>::binSearch (T* A, T const& e, Rank lo, Rank hi) const{
 
 template<typename T>
 Rank Vector<T>::fibSearch (T* A, T const& e, Rank lo, Rank hi) const{
-    printf("FibSearch\n");
-    Fib fib(hi-lo);
-    while(lo < hi){
-        while(hi - lo < fib.get()) fib.prev();
-        Rank mi = lo + fib.get() - 1;
-        if      (e < A[mi]) hi = mi;
-        else if (A[mi] < e) lo = mi + 1;
-        else                return mi;
-    }
-    return -1;
+    //printf ( "FIB search (B)\n" );
+    for( Fib fib ( hi - lo ); lo < hi;  ) { //Fib数列制表备查
+        while( hi - lo < fib.get() ) fib.prev(); //自后向前顺序查找（分摊O(1)）
+        Rank mi = lo + fib.get() - 1; //确定形如Fib(k) - 1的轴点
+        ( e < A[mi] ) ? hi = mi : lo = mi + 1; //比较后确定深入前半段[lo, mi)或后半段(mi, hi)
+    } //成功查找不能提前终止
+    return --lo; 
 }
 
 template<typename T>

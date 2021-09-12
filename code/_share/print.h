@@ -6,6 +6,7 @@
 #include "../ch07/BST.hpp"
 #include "../ch07/AVL.hpp"  
 #include "../ch08/Splay.hpp"
+#include "../ch08/BTree.hpp"
 
 RBColor color = RBColor::RED;
 
@@ -25,6 +26,7 @@ public:
    template <typename T> static void p ( BST<T>& ); //BST
    template <typename T> static void p ( AVL<T>& ); //AVL
    template <typename T> static void p ( Splay<T>& ); //Splay
+   template <typename T> static void p ( BTree<T>& ); //B-树
    template <typename T> static void p ( T& ); //向量、列表等支持traverse()遍历操作的线性结构
    template <typename T> static void p ( T* s ) //所有指针
    {  s ? p ( *s ) : print ( "<NULL>" ); } //统一转为引用
@@ -51,3 +53,5 @@ template<typename T> struct Print{
 #include "print_traversable.hpp"
 #include "print_binNode.h"  
 #include "print_bintree.h"  
+#include "print_btree.h"  
+
