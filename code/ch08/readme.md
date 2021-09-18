@@ -38,8 +38,14 @@
 
 ### 红黑树/Red-Black Tree  
 
+#### RedBlack<int>  
+
 ![](./pic/int.png)  
+
+#### RedBlack<double>  
 ![](./pic/double.png)  
+
+#### RedBlack<char>  
 ![](./pic/char.png)  
 
 
