@@ -1,6 +1,6 @@
 #pragma once
 
-template <typename T> void UniPrint::p ( BinNode<T>& node ) {
+template <typename T> void UniPrint::p ( BinNode<T>& node) {
    p ( node.data ); //数值
    
    printf (

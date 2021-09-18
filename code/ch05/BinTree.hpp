@@ -6,13 +6,13 @@
 template<typename T> 
 class BinTree {
 protected:
-    int _size; 
-    BinNode<T>* _root;
+    int _size{0}; 
+    BinNode<T>* _root{nullptr};
     virtual int updateHeight(BinNode<T>* x);
     void updateHeightAbove(BinNode<T>* x);
     BinNode<T>*& FromParentTo(const BinNode<T>& node);
 public:
-    BinTree():_size(0), _root(nullptr) {}
+    BinTree(){}
     ~BinTree() {if(_size > 0) remove(_root); }
     int size() const {  return _size; }
     bool empty() const {    return !_root; }

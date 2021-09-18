@@ -140,8 +140,8 @@ inline BinNode<T>* sibling(const BinNode<T>*& x){
 }
 
 template<typename T>
-inline BinNode<T>* uncle(const BinNode<T>*& x){
-    return IsLChild(*(x->parent));
+inline BinNode<T>* uncle(BinNode<T>* x){
+    return IsLChild(*(x->parent))?x->parent->parent->rc:x->parent->parent->lc;
 }
 
 template<typename T>
