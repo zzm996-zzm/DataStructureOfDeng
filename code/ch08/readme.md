@@ -36,5 +36,11 @@
 
 > B-树 适用于数据库或者其他需要与磁盘进行IO操作的场合，已经不属于上述均在内存中操作的范畴内，大节点，有效利用cache命中性和vector的随机访问特性
 
-### 红黑树  
+### 红黑树/Red-Black Tree  
+
+![](./pic/int.png)  
+![](./pic/double.png)  
+![](./pic/char.png)  
+
+
 

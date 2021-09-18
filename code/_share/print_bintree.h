@@ -48,6 +48,7 @@ void UniPrint::p ( Splay<T> & bt ) { //引用
    printf ( "\n" );
 }
 
+/*
 template <typename T> //元素类型
 void UniPrint::p ( RedBlack<T> & rb ) { //引用
    printf ( "%s[%p]*%d:\n", typeid ( rb ).name(), reinterpret_cast<unsigned*>(&rb), rb.size() ); //基本信息
@@ -56,6 +57,8 @@ void UniPrint::p ( RedBlack<T> & rb ) { //引用
    //release ( branchType ); 
    printf ( "\n" );
 }
+*/
+
 
 
 /******************************************************************************************
