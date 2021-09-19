@@ -1,7 +1,7 @@
 #include "../_share/print.h"
 #include <unistd.h>
 
-#define TIME 2
+#define TIME 1
 
 int main(int argc, char** argv){
 

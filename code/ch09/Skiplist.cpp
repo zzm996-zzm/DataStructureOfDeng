@@ -1,18 +1,18 @@
-#include "Skiplist.hpp"  
+#include "../_share/print.h"  
+#include <unistd.h>
 
 int main(){
     Skiplist<int, int> list;
-    for(int i = 0; i <= 100; i++){
-        list.put(i, i);
-    }  
+    for(int i = 0; i < 8; i+=2){
+        list.put(i, dice(10000));
+        print(list);
+        sleep(1);
+    }
 
-    for(int i = 0; i <= 100; i++){
-        list.get(i);
-    }  
-
-    for(int i = 0; i <= 100; i++){
-        list.remove(i);
-    }  
-
+    for(int i = 1; i < 9; i+=2){
+        list.put(i, dice(10000));
+        print(list);
+        sleep(1);
+    }
     return 0;
 }

@@ -8,10 +8,12 @@
 #include "../ch05/BinTree.hpp"
 #include "../ch07/BST.hpp"
 #include "../ch07/AVL.hpp"  
+#include "../ch07/Entry.hpp"
 #include "../ch08/Splay.hpp"
 #include "../ch08/BTree.hpp"
 #include "../ch08/RedBlack.hpp"
-
+#include "../ch09/Quadlist.hpp"  
+#include "../ch09/Skiplist.hpp"  
 
 static void print ( char* x ) {  printf ( " %s", x ? x : "<NULL>" );  } //字符串特别处理
 static void print ( const char* x ) {  printf ( " %s", x ? x : "<NULL>" );  } //字符串特别处理
@@ -23,14 +25,15 @@ public:
    static void p ( double );
    static void p ( char );
 
-   
+   template <typename K, typename V> static void p ( Entry<K, V>& ); //Entry
    template <typename T> static void p ( BinNode<T>&); //BinTree节点
    template <typename T> static void p ( BinTree<T>& ); //二叉树
    template <typename T> static void p ( BST<T>& ); //BST
    template <typename T> static void p ( AVL<T>& ); //AVL
    template <typename T> static void p ( Splay<T>& ); //Splay
    template <typename T> static void p ( BTree<T>& ); //B-树
-   template <typename T> static void p ( RedBlack<T>& ); //红黑树
+   template <typename T> static void p ( Quadlist<T>& ); //Quadlist
+   template <typename K, typename V> static void p ( Skiplist<K, V>& ); //Skiplist
    template <typename T> static void p ( T& ); //向量、列表等支持traverse()遍历操作的线性结构
    template <typename T> static void p ( T* s ) //所有指针
    {  s ? p ( *s ) : print ( "<NULL>" ); } //统一转为引用
@@ -59,7 +62,9 @@ template<typename T> struct Print{
 #include "print_bintree.h"  
 #include "print_btree.h"  
 #include "print_RBTree.h"
-
+#include "print_Entry.h"
+#include "print_QuadList.h"  
+#include "print_SkipList.h"
 
 
 

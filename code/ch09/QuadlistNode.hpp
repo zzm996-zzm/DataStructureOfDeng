@@ -1,6 +1,4 @@
-#pragma once  
-
-#include "../ch07/Entry.hpp"  
+#pragma once   
 
 template<typename T>
 struct QuadlistNode {

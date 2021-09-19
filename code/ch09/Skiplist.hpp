@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../_share/util.hpp"
 #include "../ch03/List.hpp"  
 #include "../ch07/Entry.hpp"  
 #include "Quadlist.hpp"  
@@ -54,12 +55,13 @@ bool Skiplist<K, V>::put(K k, V v){
     Entry<K, V> e = Entry<K, V>(k, v);
     if(this->empty()) this->insertAsFirst(new Quadlist<Entry<K, V>>);
     ListNode<Quadlist<Entry<K, V>>*>* qlist = this->first();
-    QuadlistNode<Entry<K, V>>* p = qlist->data->first();
+    QuadlistNode<Entry<K, V>>* p = qlist->data->first();//该链中第一个节点
     if(skipSearch(qlist, p, k))
         while(p->below) p = p->below;//有雷同词条，强制转至塔底
     qlist = this->last();//紧邻p右侧一座新塔开始成长
     QuadlistNode<Entry<K, V>>* b = qlist->data->insertAfterAbove(e, p);
-    while(rand()&1) {
+
+    while(dis(eng)&1) {//随机向上生长
         while(qlist->data->valid(p) && !p->above) p = p->pred;
         if(!qlist->data->valid(p)){
             if(qlist == this->first())
@@ -80,12 +82,12 @@ bool Skiplist<K, V>::remove(K k){
     QuadlistNode<Entry<K, V>>* p = qlist->data->first();
     if(!skipSearch(qlist, p, k)) return false;
     do {
-        QuadlistNode<Entry<K, V>>* lower = p->below;
+        QuadlistNode<Entry<K, V>>* lower = p->below;//向下删除
         qlist->data->remove(p);
         p = lower;
         qlist = qlist->succ;
     } while(qlist->succ);  
-    while(!this->empty() && this->first()->data->empty())
+    while(!this->empty() && this->first()->data->empty())//更新链表
         List<Quadlist<Entry<K, V>>*>::remove(this->first());
     return true;
 }

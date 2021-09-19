@@ -53,7 +53,7 @@ public:
     void reverse();
 
     void traverse(void(*)(T&));
-    template<typename VST> void traverse(VST&);
+    template<typename VST> void traverse(VST&&);
 };
 
 template<typename T>
@@ -168,7 +168,7 @@ void List<T>::traverse(void (*visit)(T&)){
 
 template<typename T>
 template<typename VST>
-void List<T>::traverse(VST& visit){
+void List<T>::traverse(VST&& visit){
     for(ListNode<T>* p = header->succ; p != trailer; p = p->succ)
         visit(p->data);
 }
@@ -195,7 +195,7 @@ ListNode<T>* List<T>::search(T const& e, int n, ListNode<T>* p) const {
 
 template<typename T>
 void List<T>::sort(ListNode<T>* p, int n){
-    switch(dice(size())%3){
+    switch(dice(2021)%3){
         case 1: insertionSort(p, n); break;
         case 2: selectionSort(p, n); break;
         default: mergeSort(p, n); break;

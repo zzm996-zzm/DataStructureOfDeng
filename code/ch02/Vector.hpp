@@ -225,7 +225,7 @@ Rank Vector<T>::fibSearch (T* A, T const& e, Rank lo, Rank hi) const{
 
 template<typename T>
 void Vector<T>::sort(Rank lo, Rank hi){
-    switch(0){
+    switch(dice(2021)%2){
         case 1: 
             printf("BubbleSort.\n");
             bubbleSort(lo, hi); 
