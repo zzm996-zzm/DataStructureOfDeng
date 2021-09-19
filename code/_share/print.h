@@ -14,6 +14,7 @@
 #include "../ch08/RedBlack.hpp"
 #include "../ch09/Quadlist.hpp"  
 #include "../ch09/Skiplist.hpp"  
+#include "../ch09/Hashtable.hpp"
 
 static void print ( char* x ) {  printf ( " %s", x ? x : "<NULL>" );  } //字符串特别处理
 static void print ( const char* x ) {  printf ( " %s", x ? x : "<NULL>" );  } //字符串特别处理
@@ -34,6 +35,7 @@ public:
    template <typename T> static void p ( BTree<T>& ); //B-树
    template <typename T> static void p ( Quadlist<T>& ); //Quadlist
    template <typename K, typename V> static void p ( Skiplist<K, V>& ); //Skiplist
+   template <typename K, typename V> static void p ( Hashtable<K, V>& ); //Hashtable
    template <typename T> static void p ( T& ); //向量、列表等支持traverse()遍历操作的线性结构
    template <typename T> static void p ( T* s ) //所有指针
    {  s ? p ( *s ) : print ( "<NULL>" ); } //统一转为引用
@@ -65,7 +67,7 @@ template<typename T> struct Print{
 #include "print_Entry.h"
 #include "print_QuadList.h"  
 #include "print_SkipList.h"
-
+#include "print_HashTable.h"
 
 
 

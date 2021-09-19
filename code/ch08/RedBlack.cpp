@@ -11,21 +11,29 @@ int main(int argc, char** argv){
     }
     int n = atoi(argv[1]);
     
+    system("clear");
     RedBlack<int> tree;
 
     for(int i = 0; i < n; i++){
-        tree.insert(i);
+        tree.insert(dice(100));
         printRedBlackTree(tree);
         sleep(TIME);
+        system("clear");
     }
 
     printf("Press to see if you want to see the process of deletion\n");
     getchar();
-    
-    for(int i = n -1; i >= 0; i--){
-        tree.remove(i);
-        printRedBlackTree(tree);
-        sleep(TIME);
+    system("clear");
+
+    int temp;
+    while(!tree.empty()){
+        temp = dice(100);
+        if(tree.search(temp)){
+            tree.remove(temp);
+            printRedBlackTree(tree);
+            sleep(1);
+            system("clear");
+        }
     }
 
 
