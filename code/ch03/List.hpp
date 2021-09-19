@@ -198,16 +198,12 @@ void List<T>::sort(ListNode<T>* p, int n){
     switch(dice(size())%3){
         case 1: insertionSort(p, n); break;
         case 2: selectionSort(p, n); break;
-        default: 
-            printf("Merge sort.\n");
-            mergeSort(p, n); 
-            break;
+        default: mergeSort(p, n); break;
     }
 }
 
 template<typename T>
 void List<T>::insertionSort(ListNode<T>* p, int n){
-    printf("Insertion sort.\n");
     for(int r = 0; r < n; r++){
         insertA(search(p->data, r, p), p->data);
         p = p->succ;
@@ -217,7 +213,6 @@ void List<T>::insertionSort(ListNode<T>* p, int n){
 
 template<typename T>
 void List<T>::selectionSort(ListNode<T>* p, int n){
-    printf("Selection sort.\n");
     ListNode<T>* head = p->pred;
     ListNode<T>* tail = p;
     for(int i = 0; i < n; i++)
