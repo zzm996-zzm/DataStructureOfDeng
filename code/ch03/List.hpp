@@ -1,3 +1,4 @@
+#include "../_share/util.hpp"
 #include "ListNode.hpp"  
 
 template<typename T>
@@ -188,4 +189,108 @@ ListNode<T>* List<T>::search(T const& e, int n, ListNode<T>* p) const {
     while(0 <= n--)
         if(((p = p->pred)->data) <= e) break;
     return p;
+}
+
+template<typename T>
+void List<T>::sort(ListNode<T>* p, int n){
+    switch(dice(size())%3){
+        case 1: insertionSort(p, n); break;
+        case 2: selectionSort(p, n); break;
+        default: 
+            printf("Merge sort.\n");
+            mergeSort(p, n); 
+            break;
+    }
+}
+
+template<typename T>
+void List<T>::insertionSort(ListNode<T>* p, int n){
+    printf("Insertion sort.\n");
+    for(int r = 0; r < n; r++){
+        insertA(search(p->data, r, p), p->data);
+        p = p->succ;
+        remove(p->pred);
+    }
+}
+
+template<typename T>
+void List<T>::selectionSort(ListNode<T>* p, int n){
+    printf("Selection sort.\n");
+    ListNode<T>* head = p->pred;
+    ListNode<T>* tail = p;
+    for(int i = 0; i < n; i++)
+        tail = tail->succ;
+    while(1 < n){
+        ListNode<T>* max = selectMax(head->succ, n);
+        insertB(tail, remove(max));
+        tail = tail->pred;
+        n--;
+    }
+}
+
+template<typename T>
+ListNode<T>* List<T>::selectMax(ListNode<T>* p, int n){
+    ListNode<T>* max = p;
+    for(ListNode<T>* cur = p; 1 < n; n--)
+        if(!lt((cur = cur->succ)->data, max->data))
+            max = cur;
+    return max;
+}
+
+template<typename T>
+void List<T>::merge(ListNode<T>*& p, int n, List<T>& L, ListNode<T>* q, int m){
+    ListNode<T>* pp = p->pred;
+    while(0 < m)
+        if((0 < n) && (p->data <= q->data)){
+            if(q == (p = p->succ))
+                break;
+            n--;
+        } else {
+            insertB(p, L.remove((q = q->succ)->pred)); 
+            m--;
+        }
+    p = pp->succ;
+}
+
+template<typename T>
+void List<T>::mergeSort(ListNode<T>*& p, int n){
+    if(n < 2)
+        return;
+    int m = n >> 1;
+    ListNode<T>* q = p;
+    for(int i = 0; i < m; i++)
+        q = q->succ;
+    mergeSort(p, m);
+    mergeSort(q, n-m);
+    merge(p, m, *this, q, n-m);
+}
+
+template<typename T>
+void List<T>::reverse(){
+    ListNode<T>* node = header->succ;
+    if(node == trailer)
+        return;
+    ListNode<T>* next = node->succ;
+    while(node != trailer){
+        node->succ = node->pred;
+        node = next;
+        next = next->succ;
+    }
+
+    ListNode<T>* temp = trailer;
+    trailer = header;
+    header = temp;
+    trailer->succ = nullptr;
+
+    header->succ = header->pred;
+    header->pred = nullptr;
+
+    ListNode<T>* prev = header;
+    next = header->succ;
+
+    while(next!=nullptr){
+        next->pred = prev;
+        prev = next;
+        next = next->succ;
+    }
 }

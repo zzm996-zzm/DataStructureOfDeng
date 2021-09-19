@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../ch02/Vector.hpp"
 template<typename T> 
 class Stack: public Vector<T> {

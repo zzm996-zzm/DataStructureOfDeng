@@ -2,6 +2,9 @@
 
 #include <cstdio> //采用C风格精细控制输出格式
 
+#include "../ch02/Vector.hpp"
+#include "../ch03/List.hpp"
+#include "../ch04/Stack.hpp"
 #include "../ch05/BinTree.hpp"
 #include "../ch07/BST.hpp"
 #include "../ch07/AVL.hpp"  
