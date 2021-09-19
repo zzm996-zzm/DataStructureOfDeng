@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../ch04/Stack.hpp"
-
+#include "../ch04/Queue.hpp"  
 /*
 #define FromParentTo(x) \
     (IsRoot(x)?this->_root:(IsLChild(x)?(x).parent->lc:(x).parent->rc))
@@ -40,10 +40,9 @@ struct BinNode{
     BinNode<T>* insertAsRC(T const&);
     BinNode<T>* succ();
 
-    /*
-    template <typename VST> void travLevel(VST&){ travLevel(this, VST); }
     template <typename VST> void travLevel(BinNode<T>* x, VST&);
-    */
+    template <typename VST> void travLevel(VST& visit){ travLevel(this, visit); };
+
     template <typename VST>  void travPre(BinNode<T>* x, VST&);
     template <typename VST> void travPre(VST& visit){ travPre(this, visit); }
     
@@ -247,13 +246,20 @@ BinNode<T>::travPost(BinNode<T>* x, VST& visit){
     }
 }
 
-/*
+
 template<typename T>
 template<typename VST>
-void BinNode<T>::travLevel(VST& visit){
-    
+void BinNode<T>::travLevel(BinNode<T>* x, VST& visit){
+    Queue<BinNode<T>*> Q;
+    Q.enqueue(x);
+    while(!Q.empty()){
+        BinNode<T>* x = Q.dequeue();
+        visit(x->data);
+        if(HasLChild(*x)) Q.enqueue(x->lc);
+        if(HasRChild(*x)) Q.enqueue(x->rc);
+    }
 }
-*/
+
 
 
 

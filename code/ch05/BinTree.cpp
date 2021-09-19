@@ -1,16 +1,17 @@
 #include "../_share/print.h"
 #include <iostream>
 
+#define TIME 100
 
 int main(){
     BinTree<int> tree;
-    BinNode<int>* root = tree.insertAsRoot(dice(50));
-    BinNode<int>* left = tree.insertAsLC(root, dice(50));
-    BinNode<int>* right = tree.insertAsRC(root, dice(50));
-    tree.insertAsLC(left, dice(50));
-    tree.insertAsRC(left, dice(50));
-    tree.insertAsLC(right, dice(50));
-    BinNode<int>* n = tree.insertAsRC(right, dice(50));
+    BinNode<int>* root = tree.insertAsRoot(dice(TIME));
+    BinNode<int>* left = tree.insertAsLC(root, dice(TIME));
+    BinNode<int>* right = tree.insertAsRC(root, dice(TIME));
+    tree.insertAsLC(left, dice(TIME));
+    tree.insertAsRC(left, dice(TIME));
+    tree.insertAsLC(right, dice(TIME));
+    BinNode<int>* n = tree.insertAsRC(right, dice(TIME));
     
     
 
@@ -32,13 +33,16 @@ int main(){
     tree.travPre(Increase<int>());
     print(tree);
     
-    std::cout << "Pre-traverse:   ";
+    std::cout << "Pre-traverse:    ";
     tree.travPre(Print<int>());
     std::cout << std::endl;
-    std::cout << "In-traverse:    ";
+    std::cout << "In-traverse:     ";
     tree.travIn(Print<int>());
     std::cout << std::endl;
-    std::cout << "Post-traverse:  ";
+    std::cout << "Post-traverse:   ";
     tree.travPost(Print<int>());
+    std::cout << std::endl;
+    std::cout << "Level-traverse:  "; 
+    tree.travLevel(Print<int>());
     std::cout << std::endl;
 }

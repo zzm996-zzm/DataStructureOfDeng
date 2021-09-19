@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../_share/util.hpp"
 #include "ListNode.hpp"  
 
