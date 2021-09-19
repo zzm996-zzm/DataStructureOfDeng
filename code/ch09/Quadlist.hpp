@@ -15,7 +15,7 @@ protected:
     int clear();
 public:
     Quadlist() {   init();  }
-    ~Quadlist() {   /*clear();*/ delete header; delete trailer; }
+    ~Quadlist() {   clear(); delete header; delete trailer; }
     Rank size() const { return _size; }
     bool empty() const {  return _size <= 0; }
     QuadlistNode<T>* first()  const {  return header->succ;  }
@@ -53,6 +53,13 @@ T Quadlist<T>::remove ( QuadlistNode<T>* p ) { //assert: p为Quadlist中的合�
    p->pred->succ = p->succ; p->succ->pred = p->pred; _size--;//摘除节点
    T e = p->entry; delete p; //备份词条，释放节点
    return e; //返回词条
+}
+
+template<typename T>
+int Quadlist<T>::clear(){
+    int oldSize = _size;
+    while (0 < _size) remove(header->succ);
+    return oldSize;
 }
 
 template <typename T> //遍历Quadlist，对各节点依次实施visit操作

@@ -1,5 +1,9 @@
 # 词典  
 
+虚模板：  
+
+[Dictionary.hpp](./Dictionary.hpp)  
+
 ## 跳转表  
 
 [QuadlistNode.hpp](./QuadlistNode.hpp)  
