@@ -16,6 +16,7 @@
 #include "../ch09/Skiplist.hpp"  
 #include "../ch09/Hashtable.hpp"
 #include "../ch10/PQ_ComplHeap.hpp"
+#include "../ch10/PQ_LeftHeap.hpp"  
 
 #define N 40
 #define RANDOM 100
@@ -41,6 +42,7 @@ public:
    template <typename K, typename V> static void p ( Skiplist<K, V>& ); //Skiplist
    template <typename K, typename V> static void p ( Hashtable<K, V>& ); //Hashtable
    template <typename T> static void p ( PQ_ComplHeap<T>& ); //PQ_ComplHeap
+   template <typename T> static void p ( PQ_LeftHeap<T>& ); //PQ_LeftHeap
    template <typename T> static void p ( T& ); //向量、列表等支持traverse()遍历操作的线性结构
    template <typename T> static void p ( T* s ) //所有指针
    {  s ? p ( *s ) : print ( "<NULL>" ); } //统一转为引用
@@ -74,7 +76,7 @@ template<typename T> struct Print{
 #include "print_SkipList.h"
 #include "print_HashTable.h"
 #include "print_PQ_ComplHeap.h"
-
+#include "print_PQ_LeftHeap.h"
 
 
 
