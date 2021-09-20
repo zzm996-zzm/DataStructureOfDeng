@@ -1,9 +1,8 @@
 #include "../_share/print.h"
 #include <unistd.h>
 
-int main(int argc, char** argv){
+int main(){
 
-    
     system("clear");
     RedBlack<int> tree;
     int temp;

@@ -17,7 +17,7 @@
 #include "../ch09/Hashtable.hpp"
 #include "../ch10/PQ_ComplHeap.hpp"
 
-#define N 10
+#define N 40
 #define RANDOM 100
 
 static void print ( char* x ) {  printf ( " %s", x ? x : "<NULL>" );  } //字符串特别处理
