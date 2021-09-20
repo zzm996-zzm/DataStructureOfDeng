@@ -16,10 +16,12 @@ private:
     Bitmap* lazyRemoval;  
     bool lazilyRemoved(int x) {     return lazyRemoval->test(x);   }
     void markAsRemoved(int x) {     lazyRemoval->set(x);           }
+
 protected:  
     int probe4Hit(const K& k);
     int probe4Free(const K& k);
     void rehash();
+
 public:
     
 
@@ -95,7 +97,7 @@ bool Hashtable<K, V>::put(K k, V v){
     int r = probe4Free(k);
     ht[r] = new Entry<K, V>(k, v);
     ++N;
-    if(N * 2 > M) rehash();
+    if(N * 2 > M) rehash();//装填因子控制在50%以下
     return true;
 }
 

@@ -69,7 +69,7 @@ void printRedBlack ( RedBlack<T> & rb ) { //引用
    printf ( "%s[%p]*%d:\n", typeid ( rb ).name(), reinterpret_cast<unsigned*>(&rb), rb.size() ); //基本信息
    Bitmap* branchType = new Bitmap; //记录当前节点祖先的方向
    printRBTree ( rb.root(), -1, ROOT, branchType ); //树状结构
-   //release ( branchType ); 
+   release ( branchType ); 
    printf ( "\n" );
 }
 

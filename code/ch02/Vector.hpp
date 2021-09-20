@@ -6,6 +6,7 @@ using Rank = int;
 #include <cstdio>
 #include "../_share/util.hpp"
 #include "../ch01/Fib.hpp" 
+#include "../ch10/PQ_operation.hpp"
 
 template<typename T>
 class Vector{
@@ -225,18 +226,19 @@ Rank Vector<T>::fibSearch (T* A, T const& e, Rank lo, Rank hi) const{
 
 template<typename T>
 void Vector<T>::sort(Rank lo, Rank hi){
-    switch(dice(2021)%2){
+    switch(dice(2021)%3){
         case 1: 
             printf("BubbleSort.\n");
             bubbleSort(lo, hi); 
             break;
-        //case 2: selectionSort(lo, hi); break;
+        case 2: 
+            printf("HeapSort.\n");
+            heapSort(lo, hi); 
+            break;
         default:
             printf("MergeSort.\n"); 
             mergeSort(lo, hi); 
             break;
-        //case 4: heapSort(lo, hi); break;
-        //default: quickSort(lo, hi); break;
     }
 }
 
@@ -280,6 +282,13 @@ void Vector<T>::merge(Rank lo, Rank mi, Rank hi){
         if((k < lc) && (!(j < lb) || (C[k] < B[j]))) A[i++] = C[k++];
     }
     delete []B;
+}
+
+template<typename T>
+void Vector<T>::heapSort(Rank lo, Rank hi){
+    T* A = _elem + lo; Rank n = hi - lo; heapify( A, n );
+    while ( 0 < --n ) //反复地摘除最大元并归入已排序的后缀，直至堆空
+      { swap( A[0], A[n] ); percolateDown( A, n, 0 ); } //堆顶与末元素对换，再下滤
 }
 
 

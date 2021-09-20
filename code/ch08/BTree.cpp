@@ -1,32 +1,37 @@
 #include "../_share/print.h"
 #include <unistd.h>
 
-#define TIME 2
 
 int main(int argc, char** argv){
 
-    if(argc!=2){
-        printf("Usage: %s <num of nodes>\n", argv[0]);
-        exit(0);
-    }
-    int n = atoi(argv[1]);
-
     BTree<int> btree{8};
-    for(int i = 0; i < n; i++){
-        btree.insert(i);
+    int temp;
+
+    system("clear");
+    for(int i = 1; i < N; i++){
+        temp = dice(RANDOM);
+        printf("Insert: %d\n\n", temp);
+
+        btree.insert(temp);
         print(btree);
-        sleep(TIME);
+        sleep(1);
+        system("clear");
     }
 
-    printf("Press to see if you want to see the process of deletion\n");
+    printf("Press to continue..(Deletion)\n");
     getchar();
+    system("clear");
 
-    for(int i = 0; i < n; i++){
-        btree.remove(i);
-        print(btree);
-        sleep(TIME);
+    while(!btree.empty()){
+        temp = dice(RANDOM);
+        if(btree.search(temp)){
+            printf("Delete: %d\n\n", temp);
+            btree.remove(temp);
+            print(btree);
+            sleep(1);
+            system("clear");
+        }
     }
-
-
+    
     return 0;
 }

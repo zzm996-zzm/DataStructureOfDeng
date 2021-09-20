@@ -17,7 +17,7 @@ void UniPrint::p ( BinTree<T> & bt ) { //引用
    printf ( "%s[%p]*%d:\n", typeid(bt).name(), reinterpret_cast<unsigned*>(&bt), bt.size() ); //基本信息
    Bitmap* branchType = new Bitmap; //记录当前节点祖先的方向
    printBinTree ( bt.root(), -1, ROOT, branchType ); //树状结构
-   //release ( branchType ); 
+   release ( branchType ); 
    printf ( "\n" );
 }
 
@@ -26,7 +26,7 @@ void UniPrint::p ( BST<T> & bt ) { //引用
    printf ( "%s[%p]*%d:\n", typeid ( bt ).name(), reinterpret_cast<unsigned*>(&bt), bt.size() ); //基本信息
    Bitmap* branchType = new Bitmap; //记录当前节点祖先的方向
    printBinTree ( bt.root(), -1, ROOT, branchType ); //树状结构
-   //release ( branchType ); 
+   release ( branchType ); 
    printf ( "\n" );
 }
 
@@ -35,7 +35,7 @@ void UniPrint::p ( AVL<T> & avl ) { //引用
    printf ( "%s[%p]*%d:\n", typeid ( avl ).name(), reinterpret_cast<unsigned*>(&avl), avl.size() ); //基本信息
    Bitmap* branchType = new Bitmap; //记录当前节点祖先的方向
    printBinTree ( avl.root(), -1, ROOT, branchType ); //树状结构
-   //release ( branchType ); 
+   release ( branchType ); 
    printf ( "\n" );
 }
 
@@ -44,20 +44,11 @@ void UniPrint::p ( Splay<T> & bt ) { //引用
    printf ( "%s[%p]*%d:\n", typeid ( bt ).name(), reinterpret_cast<unsigned*>(&bt), bt.size() ); //基本信息
    Bitmap* branchType = new Bitmap; //记录当前节点祖先的方向
    printBinTree ( bt.root(), -1, ROOT, branchType ); //树状结构
-   //release ( branchType ); 
+   release ( branchType ); 
    printf ( "\n" );
 }
 
-/*
-template <typename T> //元素类型
-void UniPrint::p ( RedBlack<T> & rb ) { //引用
-   printf ( "%s[%p]*%d:\n", typeid ( rb ).name(), reinterpret_cast<unsigned*>(&rb), rb.size() ); //基本信息
-   Bitmap* branchType = new Bitmap; //记录当前节点祖先的方向
-   printBinTree ( rb.root(), -1, ROOT, branchType ); //树状结构
-   //release ( branchType ); 
-   printf ( "\n" );
-}
-*/
+
 
 
 

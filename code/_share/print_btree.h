@@ -22,7 +22,7 @@ void UniPrint::p ( BTree<T> & bt ) { //引用
    Bitmap* leftmosts = new Bitmap; //记录当前节点祖先的方向
    Bitmap* rightmosts = new Bitmap; //记录当前节点祖先的方向
    printBTree ( bt.root(), 0, true, true, leftmosts, rightmosts ); //输出树状结构
-   //release ( leftmosts ); release ( rightmosts ); 
+   release ( leftmosts ); release ( rightmosts ); 
    printf ( "\n" );
 }
 

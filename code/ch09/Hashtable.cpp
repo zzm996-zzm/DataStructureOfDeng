@@ -4,7 +4,7 @@
 int main(){
     system("clear");
     Hashtable<int, int> ht;
-    for(int i = 1; i < 100; i++){
+    for(int i = 1; i < 10000; i++){
         ht.put(dice(i), dice(i));
         print(ht);
         sleep(1);

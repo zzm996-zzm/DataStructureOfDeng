@@ -1,40 +1,52 @@
 #include "../_share/print.h"  
 #include <unistd.h>
 
-#define TIME 2
-
 int main(int argc, char** argv){
-    if(argc!=2){
-        printf("Usage: %s <num of nodes>\n", argv[0]);
-        exit(0);
-    }
-    int n = atoi(argv[1]);
 
     Splay<int> S;
+    int temp;
+    system("clear");
 
-    printf("==============Insert==============");
-    for(int i = 0; i < n; i++){
-        S.insert(i);
+    //insert
+    for(int i = 0; i < N; i++){
+        temp = dice(RANDOM);
+        printf("Insert: %d\n\n", temp);
+        S.insert(temp);
         print(S);
-        sleep(TIME);
+        sleep(1);
+        system("clear");
     }
    
-    printf("==============Search==============\n");
-
-    printf("Press to see if you want to see the process of search\n");
+    //search
+    printf("Press to continue..(Search)\n");
     getchar();
 
-    for(int i = 0; i < n; i++){
-        int val = dice(n);
-        printf("Search for %d\n", val);
-        S.search(val);
-        print(S);
-        sleep(TIME);
+    for(int i = 0; i < N/10;){
+        temp = dice(RANDOM);
+        if(S.search(temp)->data == temp){
+            i++;
+            printf("Search: %d\n\n", temp);
+            print(S);
+            sleep(4);
+            system("clear");
+        }
     }
-    /*
-    printf("==============Remove==============");
-    S.remove(22);
-    print(S);
-    */
+
+    //delete
+    printf("Press to continue..(Deletion)\n");
+    getchar();
+    
+    while(!S.empty()){
+        temp = dice(RANDOM);
+        if(S.search(temp)->data == temp){
+            printf("Delete: %d\n\n", temp);
+            S.remove(temp);
+            print(S);
+            sleep(1);
+            system("clear");
+        }
+    }
+
+
     return 0;
 }

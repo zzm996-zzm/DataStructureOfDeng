@@ -4,9 +4,9 @@
 #define TIME 100 
 
 int main(){
-    Vector<double> vec;
+    Vector<int> vec;
     for(int i = 0; i < TIME; i++){
-        vec.insert(dice((i+1)*2.0));
+        vec.insert(dice((i+1)*2));
         std::cout << vec[i] 
                   << "  size: " << vec.size() 
                   << "  capacity: " << vec.capacity()

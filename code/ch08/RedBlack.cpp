@@ -1,23 +1,19 @@
 #include "../_share/print.h"
 #include <unistd.h>
 
-#define TIME 1
-
 int main(int argc, char** argv){
 
-    if(argc!=2){
-        printf("Usage: %s <num of nodes>\n", argv[0]);
-        exit(0);
-    }
-    int n = atoi(argv[1]);
     
     system("clear");
     RedBlack<int> tree;
+    int temp;
 
-    for(int i = 0; i < n; i++){
-        tree.insert(dice(100));
+    for(int i = 0; i < N; i++){
+        temp = dice(RANDOM);
+        printf("Insert: %d\n\n", temp);
+        tree.insert(temp);
         printRedBlackTree(tree);
-        sleep(TIME);
+        sleep(1);
         system("clear");
     }
 
@@ -25,17 +21,17 @@ int main(int argc, char** argv){
     getchar();
     system("clear");
 
-    int temp;
+    
     while(!tree.empty()){
-        temp = dice(100);
+        temp = dice(RANDOM);
         if(tree.search(temp)){
+            printf("Delete: %d\n\n", temp);
             tree.remove(temp);
             printRedBlackTree(tree);
             sleep(1);
             system("clear");
         }
     }
-
 
     return 0;
 }

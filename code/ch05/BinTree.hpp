@@ -13,10 +13,11 @@ protected:
     BinNode<T>*& FromParentTo(const BinNode<T>& node);
 public:
     BinTree(){}
-    ~BinTree() {if(_size > 0) remove(_root); }
+    ~BinTree() {    destruct(_root);  }
     int size() const {  return _size; }
     bool empty() const {    return !_root; }
     BinNode<T>* root() const { return _root; }
+    void destruct(BinNode<T>* x);
     BinNode<T>* insertAsRoot(T const& e);
     BinNode<T>* insertAsLC(BinNode<T>* x, T const& e);
     BinNode<T>* insertAsRC(BinNode<T>* x, T const& e);
@@ -35,6 +36,18 @@ public:
 };
 
 template<typename T>
+void BinTree<T>::destruct(BinNode<T>* x){
+    if(x!=nullptr){
+        BinNode<T>* l = x->lc;
+        BinNode<T>* r = x->rc;
+        release(x->data);
+        release(x);
+        destruct(l);
+        destruct(r);
+    }
+}
+
+template<typename T>
 int BinTree<T>::updateHeight(BinNode<T>* x){
     return x->height = 1 + max(stature(x->lc), stature(x->rc));
 }
@@ -48,7 +61,7 @@ void BinTree<T>::updateHeightAbove(BinNode<T>* x){
 }
 
 template<typename T>
-BinNode<T>* 
+BinNode<T>*
 BinTree<T>::insertAsRoot(T const& e){
     _size = 1;
     return _root = new BinNode<T>(e);
@@ -64,7 +77,7 @@ BinTree<T>::insertAsRC(BinNode<T>* x, T const& e){
 }
 
 template<typename T>
-BinNode<T>* 
+BinNode<T>*
 BinTree<T>::insertAsLC(BinNode<T>* x, T const& e){
     _size++;
     x->insertAsLC(e);
@@ -75,12 +88,20 @@ BinTree<T>::insertAsLC(BinNode<T>* x, T const& e){
 template<typename T>
 BinNode<T>*
 BinTree<T>::attachAsRC(BinNode<T>* x, BinTree<T>*& S){
-    if(x->rc = S->_root) x->rc->parent = x;
+    BinTree<T>* temp = secede(x->rc);
+
+    if(x->rc = S->_root) {
+        x->rc->parent = x;
+    }
+
+    if(temp)
+        release(temp);
+
     _size += S->_size;
     updateHeightAbove(x);
     S->_root = nullptr;
     S->_size = 0;
-    //
+    release(S);
     S = nullptr;
     return x;
 }
@@ -88,12 +109,20 @@ BinTree<T>::attachAsRC(BinNode<T>* x, BinTree<T>*& S){
 template<typename T>
 BinNode<T>*
 BinTree<T>::attachAsLC(BinNode<T>* x, BinTree<T>*& S){
-    if(x->lc = S->_root) x->lc->parent = x;
+    BinTree<T>* temp = secede(x->rc);
+
+    if(x->lc = S->_root) {
+        x->lc->parent = x;
+    }
+
+    if(temp)
+        release(temp);
+
     _size += S->_size;
     updateHeightAbove(x);
     S->_root = nullptr;
     S->_size = 0;
-    //
+    release(S);
     S = nullptr;
     return x;
 }
@@ -102,7 +131,8 @@ template<typename T>
 static int removeAt(BinNode<T>* x){
     if(!x) return 0;
     int n = 1 + removeAt(x->lc) + removeAt(x->rc);
-    //
+    release(x->data);
+    release(x);
     return n;
 }
 
@@ -129,6 +159,8 @@ int BinTree<T>::remove(BinNode<T>* x){
 template<typename T>
 BinTree<T>* 
 BinTree<T>::secede(BinNode<T>* x){
+    if(x == nullptr)
+        return nullptr;
     this->FromParentTo(*x) = nullptr;
     updateHeightAbove(x->parent);
     BinTree<T>* S = new BinTree<T>();

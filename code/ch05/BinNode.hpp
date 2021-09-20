@@ -146,12 +146,20 @@ inline BinNode<T>* uncle(BinNode<T>* x){
 template<typename T>
 BinNode<T>* 
 BinNode<T>::insertAsLC(T const& e){
+    if(lc){
+        release(lc->data);
+        release(lc);
+    }
     return lc = new BinNode(e, this);
 }
 
 template<typename T>
 BinNode<T>*
 BinNode<T>::insertAsRC(T const& e){
+    if(rc){
+        release(rc->data);
+        release(rc);
+    }
     return rc = new BinNode(e, this);
 }
 

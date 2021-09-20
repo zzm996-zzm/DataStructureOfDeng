@@ -11,12 +11,12 @@ protected:
     void solveUnderflow(BTNode<T>*);
 public:
     BTree(int order = 3):_order(order), _size(0){   _root = new BTNode<T>();    }
-    ~BTree(){}
+    ~BTree(){   if(_root) release(_root);   }
 
     int const order() { return _order; }
     int const size()  {  return _size; }
     BTNode<T>*& root() {  return _root; }
-    bool  empty() const { return !_root; }
+    bool  empty() const { return !_root || _root->key.empty(); }
 
     BTNode<T>* search (const T& e);
     bool insert(const T& e);
@@ -101,22 +101,22 @@ void BTree<T>::solveUnderflow(BTNode<T>* v){
     if ( !p ) { //递归基：已到根节点，没有孩子的下限
         if ( !v->key.size() && v->child[0] ) {
             //但倘若作为树根的v已不含关键码，却有（唯一的）非空孩子，则
-            /*DSA*/printf ( "collapse\n" );
+            ///*DSA*/printf ( "collapse\n" );
             _root = v->child[0]; _root->parent = NULL; //这个节点可被跳过
             v->child[0] = NULL; 
-            //release ( v ); //并因不再有用而被销毁
+            release ( v ); //并因不再有用而被销毁
         } //整树高度降低一层
         return;
     }
     Rank r = 0; while ( p->child[r] != v ) r++;
     //确定v是p的第r个孩子——此时v可能不含关键码，故不能通过关键码查找
     //另外，在实现了孩子指针的判等器之后，也可直接调用Vector::find()定位
-    /*DSA*/printf ( "\nrank = %d", r );
+    ///*DSA*/printf ( "\nrank = %d", r );
     // 情况1：向左兄弟借关键码
     if ( 0 < r ) { //若v不是p的第一个孩子，则
         BTNode<T>* ls = p->child[r - 1]; //左兄弟必存在
         if ( ( _order + 1 ) / 2 < ls->child.size() ) { //若该兄弟足够“胖”，则
-            /*DSA*/printf ( " ... case 1\n" );
+            ///*DSA*/printf ( " ... case 1\n" );
             v->key.insert ( 0, p->key[r - 1] ); //p借出一个关键码给v（作为最小关键码）
             p->key[r - 1] = ls->key.remove ( ls->key.size() - 1 ); //ls的最大关键码转入p
             v->child.insert ( 0, ls->child.remove ( ls->child.size() - 1 ) );
@@ -129,7 +129,7 @@ void BTree<T>::solveUnderflow(BTNode<T>* v){
     if ( p->child.size() - 1 > r ) { //若v不是p的最后一个孩子，则
         BTNode<T>* rs = p->child[r + 1]; //右兄弟必存在
         if ( ( _order + 1 ) / 2 < rs->child.size() ) { //若该兄弟足够“胖”，则
-            /*DSA*/printf ( " ... case 2\n" );
+            ///*DSA*/printf ( " ... case 2\n" );
             v->key.insert ( v->key.size(), p->key[r] ); //p借出一个关键码给v（作为最大关键码）
             p->key[r] = rs->key.remove ( 0 ); //rs的最小关键码转入p
             v->child.insert ( v->child.size(), rs->child.remove ( 0 ) );
@@ -141,7 +141,7 @@ void BTree<T>::solveUnderflow(BTNode<T>* v){
     } //至此，右兄弟要么为空，要么太“瘦”
     // 情况3：左、右兄弟要么为空（但不可能同时），要么都太“瘦”——合并
     if ( 0 < r ) { //与左兄弟合并
-        /*DSA*/printf ( " ... case 3L\n" );
+        ///*DSA*/printf ( " ... case 3L\n" );
         BTNode<T>* ls = p->child[r - 1]; //左兄弟必存在
         ls->key.insert ( ls->key.size(), p->key.remove ( r - 1 ) ); p->child.remove ( r );
         //p的第r - 1个关键码转入ls，v不再是p的第r个孩子
@@ -153,9 +153,9 @@ void BTree<T>::solveUnderflow(BTNode<T>* v){
             ls->child.insert ( ls->child.size(), v->child.remove ( 0 ) );
             if ( ls->child[ls->child.size() - 1] ) ls->child[ls->child.size() - 1]->parent = ls;
         }
-        //release ( v ); //释放v
+        release ( v ); //释放v
     } else { //与右兄弟合并
-        /*DSA*/printf ( " ... case 3R\n" );
+        ///*DSA*/printf ( " ... case 3R\n" );
         BTNode<T>* rs = p->child[r + 1]; //右兄弟必存在
         rs->key.insert ( 0, p->key.remove ( r ) ); p->child.remove ( r );
         //p的第r个关键码转入rs，v不再是p的第r个孩子
@@ -166,7 +166,7 @@ void BTree<T>::solveUnderflow(BTNode<T>* v){
             rs->child.insert ( 0, v->child.remove ( v->child.size() - 1 ) );
             if ( rs->child[0] ) rs->child[0]->parent = rs;
         }
-        //release ( v ); //释放v
+        release ( v ); //释放v
     }
     solveUnderflow ( p ); //上升一层，如有必要则继续分裂——至多递归O(logn)层
     return;
