@@ -2,7 +2,6 @@
 
 using Rank = int;
 #define DEFAULT_CAPACITY 3
-#include <random>
 #include <cstdio>
 #include "../_share/util.hpp"
 #include "../ch01/Fib.hpp" 
@@ -77,7 +76,7 @@ template<typename T>
 void Vector<T>::unsort(Rank lo, Rank hi){
     T* V = _elem + lo;
     for(Rank i = hi - lo; i > 0; i--)
-        swap(V[i-1], V[rand()%i]);
+        swap(V[i-1], V[dice(2021)%i]);
 }
 
 template<typename T>
@@ -200,7 +199,7 @@ int Vector<T>::uniquify(){
 
 template<typename T>
 Rank Vector<T>::search(T const& e, Rank lo, Rank hi) const{
-    return (rand()%2)? binSearch(_elem, e, lo, hi):fibSearch(_elem, e, lo, hi);
+    return (dice(2021)%2)? binSearch(_elem, e, lo, hi):fibSearch(_elem, e, lo, hi);
 }
 
 template<typename T> 

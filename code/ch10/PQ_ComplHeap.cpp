@@ -5,7 +5,7 @@ int main(){
     system("clear");
     PQ_ComplHeap<int> pq;
     for(int i = 1; i < 100; i++){
-        int temp = dice(i);
+        int temp = dice(RANDOM);
         printf("Insert: %d\n\n", temp);
         pq.insert(temp);
         print(pq);

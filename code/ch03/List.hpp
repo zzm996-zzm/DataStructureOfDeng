@@ -196,9 +196,18 @@ ListNode<T>* List<T>::search(T const& e, int n, ListNode<T>* p) const {
 template<typename T>
 void List<T>::sort(ListNode<T>* p, int n){
     switch(dice(2021)%3){
-        case 1: insertionSort(p, n); break;
-        case 2: selectionSort(p, n); break;
-        default: mergeSort(p, n); break;
+        case 1: 
+            printf("InsertionSort.\n");
+            insertionSort(p, n); 
+            break;
+        case 2: 
+            printf("SelectionSort.\n");
+            selectionSort(p, n); 
+            break;
+        default: 
+            printf("MergeSort.\n");
+            mergeSort(p, n); 
+            break;
     }
 }
 

@@ -1,35 +1,50 @@
-#include <iostream>
 #include "../_share/print.h"
-
-#define TIME 100 
+#include <unistd.h>
 
 int main(){
     Vector<int> vec;
-    for(int i = 0; i < TIME; i++){
-        vec.insert(dice((i+1)*2));
-        std::cout << vec[i] 
-                  << "  size: " << vec.size() 
-                  << "  capacity: " << vec.capacity()
-                  << std::endl;
+    system("clear");
+    int temp;
+
+    for(int i = 0; i < 10; i++){
+        temp = dice(1000);
+        vec.insert(temp);
+        printf("Insert:  %d  Size:  %d   Capacity:  %d\n\n", temp, vec.size(), vec.capacity());
+        print(vec);
+        sleep(1);
+        system("clear");
+    }  
+
+    for(int i = 0; !vec.empty() && i < 50; i++){
+        vec.sort();
+        printf("\n");
+        print(vec);
+        sleep(5);
+        system("clear");
+        int die = dice(2021) % 5;
+        if(die == 0){//unsort
+            vec.unsort();
+            printf("Unsort.  \n\n");
+            print(vec);
+            sleep(5);
+        } else if(die == 1){
+            temp = dice(1000);
+            vec.insert(dice(2021)%vec.size(),temp);
+            printf("Insert:  %d  Size:  %d   Capacity:  %d\n\n", temp, vec.size(), vec.capacity());
+            print(vec);
+            sleep(1);
+        } else {
+            int lo = dice(vec.size()+1);
+            int hi = dice(vec.size()+1);
+            if(hi < lo){
+                swap(lo, hi);
+            }
+            vec.remove(lo, hi);
+            printf("Remove: %d-%d  Size:  %d   Capacity:  %d\n\n", lo, hi, vec.size(), vec.capacity());
+            print(vec);
+            sleep(5);
+        }
+        system("clear");
     }
-    print(vec);
-    increase(vec);
-    print(vec);
-    std::cout << "Is it empty?  " << vec.empty() << std::endl;
-    
-    
-
-    if(vec.disordered()){
-        vec.deduplicate();
-    }
-
-    print(vec);
-    vec.sort();
-    print(vec);
-
-    std::cout << "Search: " << vec.search(2.0) << std::endl;
-    
-    vec.unsort();
-    print(vec);
-    std::cout << "Find: " << vec.find(2) << std::endl;
+    return 0;
 }

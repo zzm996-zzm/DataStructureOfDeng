@@ -1,15 +1,35 @@
 #include "../_share/print.h"
-#include <iostream>
+#include <unistd.h>  
+
 
 #define TIME 100
 int main(){
     Stack<int> S;
-    for(int i = 0; i < TIME; i++)
-        S.push(dice(100));
-    print(S);
-    for(int i = 0; i < TIME/3; i++)
-        S.pop();
-    print(S);
-    std::cout << S.top() << std::endl;
+    system("clear");
+    int temp;
+    for(int i = 0; i < 5; i++){
+        temp = dice(RANDOM);
+        S.push(temp);
+        printf("Push  %d\n\n", temp);
+        print(S);
+        sleep(1);
+        system("clear");
+    }
+    
+    while(!S.empty()){
+        temp = dice(RANDOM);
+        if(temp & 1){
+            S.push(temp);
+            printf("Push  %d\n\n", temp);
+        }
+        else {
+            temp = S.pop();
+            printf("Pop   %d\n\n", temp);
+        }
+        print(S);
+        sleep(1);
+        system("clear");
+    }
+    
     return 0;
 }
