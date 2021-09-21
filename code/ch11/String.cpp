@@ -46,5 +46,28 @@ int main(){
     putchar('\n');
     printf("%c %c\n", str.front(), str.back());
 
+    printf("========================================\n");  
+
+    String S("data structures");
+    printf("length()                                     %u\n", S.size());
+    printf("charAt(5)                                    %c\n", S.charAt(5));
+    
+    printf("prefix(4)                                    ");
+    print(S.prefix(4));
+    putchar('\n');
+
+    printf("suffix(10)                                   ");
+    print(S.suffix(10));
+    putchar('\n');  
+
+    S.concat(" and algorithms");
+    printf("concat(\" and algorithms\")                    ");
+
+    print(S);
+    putchar('\n');
+
+    printf("equal(\"data structures\")                     %d\n", S.equal("data structures"));
+    printf("equal(\"data structures and algorithms\")      %d\n", S.equal("data structures and algorithms"));
+
     return 0;
 }
