@@ -69,5 +69,8 @@ int main(){
     printf("equal(\"data structures\")                     %d\n", S.equal("data structures"));
     printf("equal(\"data structures and algorithms\")      %d\n", S.equal("data structures and algorithms"));
 
+    int temp = S.indexOf("tures");
+    printf("%d\n", temp);
+
     return 0;
 }

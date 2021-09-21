@@ -1,6 +1,16 @@
 #pragma once  
 #include <cstring>
+#include <unistd.h>
 #include "../_share/util.hpp"
+#include "../ch02/Vector.hpp"
+
+struct SuperCharacter {
+    bool marked;
+    char c;
+    SuperCharacter() = default;
+    SuperCharacter(char k, bool b = false):c(k), marked(b){}
+};//For display 
+
 
 class String {
 public:
@@ -26,14 +36,24 @@ public:
     String suffix(size_type k);//返回后缀
     bool equal(const String& rhs)/* 判等 */ {   return *this == rhs;  }
     String& concat(const String& rhs);//字符串拼接
-    size_type indexOf(const String& rhs);//子串匹配
+    int indexOf(const String& rhs);//子串匹配
     
+
+    /* display */
+    int displayBruteForce1(const String& P);
+    int displayBruteForce2(const String& P);
+    int displayKMP(const String& P);
+
+
     char& operator[](size_type r);//重载下标运算符
     bool operator==(const String& rhs);//重载判等运算符
     bool operator!=(const String& rhs) {    return !(*this == rhs);     }
 
 private:
-
+    int BruteForce1(const String& P);
+    int BruteForce2(const String& P);
+    int* buildNext(const String& P);
+    int KMP(const String& P);
     char* data_;
     char* end_;
 };
@@ -140,6 +160,7 @@ String& String::concat(const String& rhs){
     for(i = 0; i < l; i++){
         *(n+i) = (*this)[i];
     }
+
     for(int j = 0; j < r && i < sum; i++, j++){
         *(n+i) = *(rhs.data_ +j);
     }
@@ -150,4 +171,221 @@ String& String::concat(const String& rhs){
     delete[] data_;
     data_ = n;
     return *this;
+}
+
+int
+String::indexOf(const String& rhs){
+    return KMP(rhs);
+}
+
+int 
+String::BruteForce1(const String& P){
+    size_type n = this->size(), i = 0;
+    size_type m = P.size(), j = 0;
+
+    while(j < m && i < n)
+        if(this->data_[i] == P.data_[j]){
+            i++;
+            j++;
+        } else {
+            i -= j - 1;
+            j = 0;
+        }
+    return i - j;
+}
+
+int 
+String::BruteForce2(const String& P){
+    size_type n = this->size(), i;
+    size_type m = P.size(), j;
+    for(i = 0; i < n - m + 1; i++){
+        for(j = 0; j < m; j++)
+            if(this->data_[i+j] != P.data_[j]) break;
+        if(j >= m) break;//找到后立即跳出 
+    }
+    return i;
+}
+
+int
+String::KMP(const String& P){
+    int* next = buildNext(P);
+    int n = (int)this->size(), i = 0;
+    int m = (int)P.size(), j = 0;
+    while(j < m && i < n)
+        if(0 > j || this->data_[i] == P.data_[j]){
+            i++;
+            j++;
+        } else 
+            j = next[j];
+    delete[] next;
+    return i - j;
+}
+
+int* 
+String::buildNext(const String& P){
+    size_type m = P.size(), j = 0;
+    int* N = new int[m];
+    int t = N[0] = -1;
+    while(j < m - 1)
+        if(t < 0 || P.data_[j] == P.data_[t]){
+            j++;
+            t++;
+            N[j] = t;
+        } else 
+            t = N[t];
+    return N;
+}
+int 
+String::displayBruteForce1(const String& P){
+    size_type n = this->size(), i = 0;
+    size_type m = P.size(), j = 0;
+
+    size_type fixed = 0;
+
+    Vector<SuperCharacter> source;
+    Vector<SuperCharacter> pattern;
+
+    for(int a = 0; a < n; a++){
+        source.insert(SuperCharacter(this->data_[a]));   
+    }
+
+    for(int a = 0; a < m; a++){
+        pattern.insert(SuperCharacter(P.data_[a]));
+    }
+    system("clear");
+    while(j < m && i < n){
+        
+        if(source[i].c == pattern[j].c){
+            source[i].marked = true;
+            pattern[j].marked = true;
+            i++;
+            j++; 
+        } else {
+            int clear_for_i = i;
+            int clear_for_j = j;
+
+            i -= j - 1;
+            fixed = i;
+            
+            j = 0;
+            for(int a = i; a <= clear_for_i; a++)
+                source[a].marked = false;
+            for(int a = j; a <= clear_for_j; a++)
+                pattern[a].marked = false;
+        }
+
+        printf("Source String:  ");
+        for(int iter = 0; iter != n; iter++){
+            if(source[iter].marked == true)
+                printf("\033[0m\033[1;31m%c\033[0m",source[iter].c);
+            else 
+                printf("%c",source[iter].c);
+        }
+        putchar('\n');
+
+        printf("Pattern String: ");
+        for(int iter = 0; iter < fixed; iter++)
+            putchar(' ');
+        for(int iter = 0; iter != m; iter++){
+            if(pattern[iter].marked == true)
+                printf("\033[0m\033[1;31m%c\033[0m",pattern[iter].c);
+            else 
+                printf("%c",pattern[iter].c);
+        }
+        putchar('\n');
+        sleep(1);
+        system("clear");
+    }
+
+    return i - j;
+}
+
+
+int 
+String::displayBruteForce2(const String& P){
+    size_type n = this->size(), i;
+    size_type m = P.size(), j;
+    size_type fixed = 0;
+
+    bool flag = false;
+
+    Vector<SuperCharacter> source;
+    Vector<SuperCharacter> pattern;
+
+    for(int a = 0; a < n; a++){
+        source.insert(SuperCharacter(this->data_[a]));   
+    }
+
+    for(int a = 0; a < m; a++){
+        pattern.insert(SuperCharacter(P.data_[a]));
+    }
+
+    system("clear");
+    for(i = 0; i < n - m + 1; i++){
+
+        for(j = 0; j < m; j++){
+            if(source[i+j].c != pattern[j].c) {
+                flag = false;
+                for(int iter = 0; iter < j; iter++){
+                    source[i+iter].marked = false;
+                    pattern[iter].marked = false;
+                }
+                break;
+            } else {
+                flag = true;
+                source[i+j].marked = true;
+                pattern[j].marked = true;
+
+                printf("Source String:  ");
+                for(int iter = 0; iter != n; iter++){
+                    if(source[iter].marked == true)
+                        printf("\033[0m\033[1;31m%c\033[0m",source[iter].c);
+                    else 
+                        printf("%c",source[iter].c);
+                }
+                putchar('\n');
+
+                printf("Pattern String: ");
+                for(int iter = 0; iter < i; iter++)
+                    putchar(' ');
+                for(int iter = 0; iter != m; iter++){
+                    if(pattern[iter].marked == true)
+                        printf("\033[0m\033[1;31m%c\033[0m",pattern[iter].c);
+                    else 
+                        printf("%c",pattern[iter].c);
+                }
+                putchar('\n');
+                sleep(1);
+                system("clear");
+            }
+
+        }
+
+        if(flag == false){
+            printf("Source String:  ");
+            for(int iter = 0; iter != n; iter++){
+                if(source[iter].marked == true)
+                    printf("\033[0m\033[1;31m%c\033[0m",source[iter].c);
+                else 
+                    printf("%c",source[iter].c);
+            }
+            putchar('\n');
+
+            printf("Pattern String: ");
+            for(int iter = 0; iter < i; iter++)
+                putchar(' ');
+            for(int iter = 0; iter != m; iter++){
+                if(pattern[iter].marked == true)
+                    printf("\033[0m\033[1;31m%c\033[0m",pattern[iter].c);
+                else 
+                    printf("%c",pattern[iter].c);
+            }
+            putchar('\n');
+            sleep(1);
+            system("clear");
+        }        
+
+        if(j >= m) break;//找到后立即跳出 
+    }
+    return i;
 }
