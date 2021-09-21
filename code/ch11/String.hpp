@@ -207,10 +207,25 @@ String::BruteForce2(const String& P){
 int
 String::KMP(const String& P){
     int* next = buildNext(P);
+
+    //print next table
+    putchar(' ');
+    for(int a = 0; a < P.size(); a++){
+        putchar(P.data_[a]);
+        putchar(' ');
+    }
+    putchar('\n');
+    for(int a = 0; a < P.size(); a++){
+        printf("%d ", next[a]);
+    }
+    putchar('\n');
+    //print next table
+    
+
     int n = (int)this->size(), i = 0;
     int m = (int)P.size(), j = 0;
     while(j < m && i < n)
-        if(0 > j || this->data_[i] == P.data_[j]){
+        if(j < 0 || this->data_[i] == P.data_[j]){
             i++;
             j++;
         } else 
@@ -225,7 +240,7 @@ String::buildNext(const String& P){
     int* N = new int[m];
     int t = N[0] = -1;
     while(j < m - 1)
-        if(t < 0 || P.data_[j] == P.data_[t]){
+        if(t < 0 || P.data_[j] == P.data_[t]){//短路求值
             j++;
             t++;
             N[j] = t;
@@ -233,6 +248,7 @@ String::buildNext(const String& P){
             t = N[t];
     return N;
 }
+
 int 
 String::displayBruteForce1(const String& P){
     size_type n = this->size(), i = 0;
