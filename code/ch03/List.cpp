@@ -1,5 +1,4 @@
 #include "../_share/print.h"  
-#include <iostream>
 #include <unistd.h>
 
 int main(){

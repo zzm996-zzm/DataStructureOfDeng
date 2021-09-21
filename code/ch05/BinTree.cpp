@@ -1,5 +1,4 @@
 #include "../_share/print.h"
-#include <iostream>
 #include <unistd.h>
 
 #define TIME 100
@@ -71,17 +70,17 @@ int main(){
     sleep(5);
     printf("\n\n");
     
-    std::cout << "Pre-traverse:    ";
+    print("Pre-traverse:    ");
     tree.travPre(Print<int>());
-    std::cout << std::endl;
-    std::cout << "In-traverse:     ";
+    putchar('\n');
+    print("In-traverse:     ");
     tree.travIn(Print<int>());
-    std::cout << std::endl;
-    std::cout << "Post-traverse:   ";
+    putchar('\n');
+    print("Post-traverse:   ");
     tree.travPost(Print<int>());
-    std::cout << std::endl;
-    std::cout << "Level-traverse:  "; 
+    putchar('\n');
+    print("Level-traverse:  "); 
     tree.travLevel(Print<int>());
-    std::cout << std::endl;
+    putchar('\n');
     
 }
