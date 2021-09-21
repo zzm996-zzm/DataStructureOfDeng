@@ -37,17 +37,15 @@ public:
     bool equal(const String& rhs)/* 判等 */ {   return *this == rhs;  }
     String& concat(const String& rhs);//字符串拼接
     int indexOf(const String& rhs);//子串匹配
-    
+
+    char& operator[](size_type r);//重载下标运算符
+    bool operator==(const String& rhs);//重载判等运算符
+    bool operator!=(const String& rhs) {    return !(*this == rhs);     }
 
     /* display */
     int displayBruteForce1(const String& P);
     int displayBruteForce2(const String& P);
     int displayKMP(const String& P);
-
-
-    char& operator[](size_type r);//重载下标运算符
-    bool operator==(const String& rhs);//重载判等运算符
-    bool operator!=(const String& rhs) {    return !(*this == rhs);     }
 
 private:
     int BruteForce1(const String& P);
