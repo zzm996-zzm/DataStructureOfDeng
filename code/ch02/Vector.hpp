@@ -225,7 +225,7 @@ Rank Vector<T>::fibSearch (T* A, T const& e, Rank lo, Rank hi) const{
 
 template<typename T>
 void Vector<T>::sort(Rank lo, Rank hi){
-    switch(dice(2021)%3){
+    switch(dice(2021)%4){
         case 1: 
             printf("BubbleSort.\n");
             bubbleSort(lo, hi); 
@@ -233,6 +233,10 @@ void Vector<T>::sort(Rank lo, Rank hi){
         case 2: 
             printf("HeapSort.\n");
             heapSort(lo, hi); 
+            break;
+        case 3:
+            printf("QuickSort.\n");
+            quickSort(lo, hi);
             break;
         default:
             printf("MergeSort.\n"); 
@@ -291,6 +295,31 @@ void Vector<T>::heapSort(Rank lo, Rank hi){
 }
 
 
+template<typename T>
+void Vector<T>::quickSort(Rank lo, Rank hi){
+    if(hi - lo < 2) return;
+    Rank mi = partition(lo, hi-1);
+    quickSort(lo, mi);
+    quickSort(mi+1, hi); 
+}
+
+template<typename T>
+Rank Vector<T>::partition(Rank lo, Rank hi){
+    swap(_elem[lo], _elem[lo + dice(2021)%(hi - lo + 1)]);
+    T pivot = _elem[lo];
+    while(lo < hi){
+        while((lo < hi) && (pivot <= _elem[hi]))
+            hi--;
+        _elem[lo] = _elem[hi];
+        while((lo < hi) && (_elem[lo] <= pivot))
+            lo++;
+        _elem[hi] = _elem[lo];
+    }
+    _elem[lo] = pivot;
+    return lo;
+}
+
 template<typename T> void increase(Vector<T>& V){
     V.traverse(Increase<T>());
 }
+
