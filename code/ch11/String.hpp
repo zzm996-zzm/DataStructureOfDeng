@@ -9,6 +9,7 @@ struct SuperCharacter {
     char c;
     SuperCharacter() = default;
     SuperCharacter(char k, bool b = false):c(k), marked(b){}
+    ~SuperCharacter() = default;
 };//For display 
 
 
@@ -403,3 +404,4 @@ String::displayBruteForce2(const String& P){
     }
     return i;
 }
+
