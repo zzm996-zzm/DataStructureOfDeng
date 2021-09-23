@@ -6,6 +6,8 @@
 #include "../ch03/List.hpp"
 #include "../ch04/Stack.hpp"
 #include "../ch05/BinTree.hpp"
+#include "../ch06/Graph.hpp"
+#include "../ch06/GraphMatrix.hpp"
 #include "../ch07/BST.hpp"
 #include "../ch07/AVL.hpp"  
 #include "../ch07/Entry.hpp"
@@ -33,6 +35,16 @@ static void print ( String x) {
    }
 }
 
+static int cnt = 0;
+
+class WrappedInt {
+private:
+   int i;
+public:
+   int get() { return i;  }
+   WrappedInt() { i = cnt++; }
+};
+
 class UniPrint {
 public:
    static void p ( int );
@@ -40,6 +52,9 @@ public:
    static void p ( double );
    static void p ( char );
    static void p ( String& );
+   static void p ( VStatus ); //图顶点的状态
+   static void p ( EType ); //图边的类型
+   static void p ( WrappedInt); 
 
    template <typename K, typename V> static void p ( Entry<K, V>& ); //Entry
    template <typename T> static void p ( BinNode<T>&); //BinTree节点
@@ -53,6 +68,7 @@ public:
    template <typename K, typename V> static void p ( Hashtable<K, V>& ); //Hashtable
    template <typename T> static void p ( PQ_ComplHeap<T>& ); //PQ_ComplHeap
    template <typename T> static void p ( PQ_LeftHeap<T>& ); //PQ_LeftHeap
+   template <typename Tv, typename Te> static void p ( GraphMatrix<Tv, Te>& ); //Graph
    template <typename T> static void p ( T& ); //向量、列表等支持traverse()遍历操作的线性结构
    template <typename T> static void p ( T* s ) //所有指针
    {  s ? p ( *s ) : print ( "<NULL>" ); } //统一转为引用
@@ -62,6 +78,7 @@ void UniPrint::p ( int e ) {  printf ( " %04d", e ); }
 void UniPrint::p ( float e ) { printf ( " %4.3f", e ); }
 void UniPrint::p ( double e ) { printf ( " %4.3f", e ); }
 void UniPrint::p ( char e ) { printf ( " %c", ( 31 < e ) && ( e < 128 ) ? e : '$' ); }
+void UniPrint::p ( WrappedInt e) {  printf( " %04d", e.get() ); }
 void UniPrint::p ( String& e) {
    const char* c = e.c_str();
    while(*c){
@@ -69,6 +86,26 @@ void UniPrint::p ( String& e) {
       c++;
    }
 }
+void UniPrint::p ( VStatus e ) {
+   switch ( e ) {
+      case VStatus::UNDISCOVERED:   printf ( "U" ); break;
+      case VStatus::DISCOVERED:     printf ( "D" ); break;
+      case VStatus::VISITED:        printf ( "V" ); break;
+      case VStatus::SOURCE:         printf ( "S" ); break;
+      default:             printf ( "X" ); break;
+   }
+}
+void UniPrint::p ( EType e ) {
+   switch ( e ) {
+      case EType::UNDETERMINED:   printf ( "U" ); break;
+      case EType::TREE:           printf ( "T" ); break;
+      case EType::CROSS:          printf ( "C" ); break;
+      case EType::BACKWARD:       printf ( "B" ); break;
+      case EType::FORWARD:        printf ( "F" ); break;
+      default:             printf ( "X" ); break;
+   }
+}
+
 
 
 template <typename T> static void print ( T& x ) {  UniPrint::p ( x );  }
@@ -87,6 +124,7 @@ template<typename T> struct Print{
 #include "print_traversable.hpp"
 #include "print_binNode.h"  
 #include "print_bintree.h"  
+#include "print_GraphMatrix.h"  
 #include "print_btree.h"  
 #include "print_RBTree.h"
 #include "print_Entry.h"
