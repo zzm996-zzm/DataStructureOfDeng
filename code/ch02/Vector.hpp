@@ -6,6 +6,8 @@ using Rank = int;
 #include "../_share/util.hpp"
 #include "../ch01/Fib.hpp" 
 #include "../ch10/PQ_operation.hpp"
+#include <exception>
+#include <iostream>
 
 template<typename T>
 class Vector{
@@ -17,6 +19,7 @@ protected:
     void copyFrom(T const* A, Rank lo, Rank hi);
     void expand();
     void shrink();
+    void reserve(size_t n);
     bool bubble(Rank lo, Rank hi);
     void bubbleSort(Rank lo, Rank hi);
     Rank max(Rank lo, Rank hi);
@@ -27,8 +30,9 @@ protected:
     void quickSort(Rank lo, Rank hi);
     void heapSort(Rank lo, Rank hi);
 public:
-    Vector(int c = DEFAULT_CAPACITY, int s = 0, T v = 0){
-        _elem = new T[_capacity = c];
+    Vector(int c = DEFAULT_CAPACITY, int s = 0, T v = T()){
+        _capacity = c;
+        _elem = new T[_capacity];
         for(_size = 0; _size < s; _elem[_size++] = v);
     }
     Vector(T const* A, Rank n){ copyFrom(A, 0, n); }
@@ -100,7 +104,10 @@ void Vector<T>::expand(){
     if(_size < _capacity)  return;
     if(_capacity < DEFAULT_CAPACITY) _capacity = DEFAULT_CAPACITY;
     T* oldElem = _elem;
-    _elem = new T[_capacity <<= 1];
+    _capacity = _capacity << 1;
+    
+    _elem = new T[_capacity];
+    
     for(int i = 0; i < _size; i++)
         _elem[i] = oldElem[i];
     delete []oldElem;
@@ -132,6 +139,8 @@ Rank Vector<T>::find(T const& e, Rank lo, Rank hi) const{
 
 template<typename T>
 Rank Vector<T>::insert(Rank r, T const& e){
+    //printf("%s",typeid(e).name());
+    //printf("%lu\n", sizeof(T));
     expand();
     for(int i = _size; i > r; i--)
         _elem[i] = _elem[i-1];
@@ -323,3 +332,7 @@ template<typename T> void increase(Vector<T>& V){
     V.traverse(Increase<T>());
 }
 
+template<typename T>
+void Vector<T>::reserve(size_t n){
+    
+}

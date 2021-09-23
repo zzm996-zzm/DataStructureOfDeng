@@ -2,6 +2,7 @@
 
 #include <cstdio> //采用C风格精细控制输出格式
 
+#include "./util.hpp"
 #include "../ch02/Vector.hpp"
 #include "../ch03/List.hpp"
 #include "../ch04/Stack.hpp"
@@ -35,14 +36,39 @@ static void print ( String x) {
    }
 }
 
-static int cnt = 0;
+static int cntChar = 0;
+static int cntInt = 0;
 
 class WrappedInt {
 private:
    int i;
 public:
    int get() { return i;  }
-   WrappedInt() { i = cnt++; }
+   WrappedInt(){  i = cntInt++;}
+};
+
+class WrappedChar {
+private:
+   char i;
+public:
+   char get() { return i;  }
+   WrappedChar() {
+      if(cntChar == 0){
+         i = 'S';
+         cntChar++;
+      } else if(cntChar < 27){
+         i = 64 + cntChar; 
+         cntChar++;
+      } else {
+         i = '$';
+      }
+   }
+   WrappedChar(int i){
+      i = dice();
+   }
+
+   
+
 };
 
 class UniPrint {
@@ -51,10 +77,12 @@ public:
    static void p ( float );
    static void p ( double );
    static void p ( char );
+   static void p ( size_t );
    static void p ( String& );
    static void p ( VStatus ); //图顶点的状态
    static void p ( EType ); //图边的类型
    static void p ( WrappedInt); 
+   static void p ( WrappedChar); 
 
    template <typename K, typename V> static void p ( Entry<K, V>& ); //Entry
    template <typename T> static void p ( BinNode<T>&); //BinTree节点
@@ -75,10 +103,12 @@ public:
 }; //UniPrint
 
 void UniPrint::p ( int e ) {  printf ( " %04d", e ); }
+void UniPrint::p ( size_t e) {   printf ("-%lu", e); }
 void UniPrint::p ( float e ) { printf ( " %4.3f", e ); }
 void UniPrint::p ( double e ) { printf ( " %4.3f", e ); }
 void UniPrint::p ( char e ) { printf ( " %c", ( 31 < e ) && ( e < 128 ) ? e : '$' ); }
 void UniPrint::p ( WrappedInt e) {  printf( " %04d", e.get() ); }
+void UniPrint::p ( WrappedChar e) {  printf ( " %c", ( 31 < e.get() ) && ( e.get() < 128 ) ? e.get() : '$' ); }
 void UniPrint::p ( String& e) {
    const char* c = e.c_str();
    while(*c){

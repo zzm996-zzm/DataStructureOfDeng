@@ -16,7 +16,7 @@ struct Vertex {
     int fTime{-1};
     int parent{-1};
     int priority{INT_MAX};
-    Vertex(Tv const& d = (Tv)0):data{d}{}
+    Vertex(Tv const& d = Tv(0)):data{d}{}
 };
 
 template<typename Te>
@@ -30,8 +30,8 @@ struct Edge {
 template<typename Tv, typename Te>
 class GraphMatrix: public Graph<Tv, Te> {
 private:
-    Vector<Vertex<Tv>> V;//顶点集
-    Vector<Vector<Edge<Te>*>> E;//边集
+    Vector<Vertex<Tv>> _V;//顶点集
+    Vector<Vector<Edge<Te>*>> _E;//边集
 public:
     GraphMatrix() { 
         this->n = 0;
@@ -41,32 +41,34 @@ public:
     ~GraphMatrix() {
         for(int j = 0; j < this->n; j++)
             for(int k = 0; k < this->n; k++)
-                delete E[j][k];
+                delete _E[j][k];
     }
+    const Vector<Vertex<Tv>>& V() const {  return _V;  }
+    const Vector<Vector<Edge<Te>*>>& E() const {  return _E;}
     //基本操作
-    virtual Tv& vertex(int i) { return V[i].data; }
-    virtual int inDegree(int i) {   return V[i].inDegree; }
-    virtual int outDegree(int i) {  return V[i].outDegree; }
+    virtual Tv& vertex(int i) { return _V[i].data; }
+    virtual int inDegree(int i) {   return _V[i].inDegree; }
+    virtual int outDegree(int i) {  return _V[i].outDegree; }
     virtual int firstNbr(int i) {   return nextNbr(i, this->n); }
     virtual int nextNbr(int i, int j){//相对于顶点j的下一邻接顶点
         while((-1 < j) && (!exists(i, --j)))
             ; 
         return j;
     }
-    virtual VStatus& status(int i) {    return V[i].status; }
-    virtual int& dTime(int i) { return V[i].dTime; }
-    virtual int& fTime(int i) { return V[i].fTime; }
-    virtual int& parent(int i) {    return V[i].parent; }
-    virtual int& priority(int i) {   return V[i].priority; }
+    virtual VStatus& status(int i) {    return _V[i].status; }
+    virtual int& dTime(int i) { return _V[i].dTime; }
+    virtual int& fTime(int i) { return _V[i].fTime; }
+    virtual int& parent(int i) {    return _V[i].parent; }
+    virtual int& priority(int i) {   return _V[i].priority; }
     //顶点动态操作
     virtual int insert(Tv const& vertex);
     virtual Tv remove(int i);
     //边的确认操作
     virtual bool exists(int i, int j);
     //边的基本操作
-    virtual EType& type(int i, int j) { return E[i][j]->type; }
-    virtual Te& edge(int i, int j) {  return E[i][j]->data; }
-    virtual double& weight(int i, int j) { return E[i][j]->weight; }
+    virtual EType& type(int i, int j) { return _E[i][j]->type; }
+    virtual Te& edge(int i, int j) {  return _E[i][j]->data; }
+    virtual double& weight(int i, int j) { return _E[i][j]->weight; }
     //边的动态操作
     virtual void insert(Te const& edge, int i, int j, int w = 0);
     virtual Te remove(int i, int j);
@@ -81,7 +83,7 @@ GraphMatrix<Tv, Te>::GraphMatrix(ifstream& alg4, GType type){
     for(int i = 0; i < vNum; i++)
         this->insert(Tv());
     
-    int src, det;
+    int src = 0, det = 0;
     double weg = 0.0;
 
     switch(type){
@@ -91,6 +93,7 @@ GraphMatrix<Tv, Te>::GraphMatrix(ifstream& alg4, GType type){
                 this->insert(Te(), src, det, weg);
             }
             break;
+        
         case GType::WEIGHTEDGRAPH:
             for(int i = 0; i < eNum; i++){
                 alg4 >> src >> det >> weg;
@@ -101,54 +104,56 @@ GraphMatrix<Tv, Te>::GraphMatrix(ifstream& alg4, GType type){
 
 template<typename Tv, typename Te>
 int GraphMatrix<Tv, Te>::insert(Tv const& vertex){
-    for(int j = 0; j < this->n; j++)
-        E[j].insert(nullptr);
+    for(int j = 0; j < this->n; j++){
+        _E[j].insert(nullptr);
+    }
+        
     this->n++;
-    E.insert(Vector<Edge<Te>*>(this->n, this->n, nullptr));
-    return V.insert(Vertex<Tv>(vertex));
+    _E.insert(Vector<Edge<Te>*>(this->n, this->n, nullptr));
+    return _V.insert(Vertex<Tv>(vertex));
 }
 
 template<typename Tv, typename Te>
 Tv GraphMatrix<Tv, Te>::remove(int i){
     for(int j = 0; j < this->n; j++)
         if(exists(i, j)){
-            delete E[i][j];
-            V[j].inDegree--;
+            delete _E[i][j];
+            _V[j].inDegree--;
         }
-    E.remove(i);
+    _E.remove(i);
     this->n--;
     Tv vBak = vertex(i);
-    V.remove(i);
+    _V.remove(i);
     for(int j = 0; j < this->n; j++)
-        if(Edge<Te>* e = E[j].remove(i)){
+        if(Edge<Te>* e = _E[j].remove(i)){
             delete e;
-            V[j].outDegree--;
+            _V[j].outDegree--;
         }
     return vBak;
 }
 template<typename Tv, typename Te>
 bool GraphMatrix<Tv, Te>::exists(int i, int j){
-    return (0 <= i) && (i < this->n) && (0 <= j) && (j < this->n) && E[i][j] != nullptr; 
+    return (0 <= i) && (i < this->n) && (0 <= j) && (j < this->n) && _E[i][j] != nullptr; 
 }
 
 template<typename Tv, typename Te>
 void GraphMatrix<Tv, Te>::insert(Te const& edge, int i, int j, int w){
     if(exists(i, j)) 
         return;
-    E[i][j] = new Edge<Te>(edge, w);
+    _E[i][j] = new Edge<Te>(edge, w);
     this->e++;
-    V[i].outDegree++;
-    V[j].inDegree++;
+    _V[i].outDegree++;
+    _V[j].inDegree++;
 }
 
 template<typename Tv, typename Te>
 Te GraphMatrix<Tv, Te>::remove(int i, int j){
     Te eBak = edge(i, j);
-    delete E[i][j];
-    E[i][j] = nullptr;
+    delete _E[i][j];
+    _E[i][j] = nullptr;
     this->e--;
-    V[i].outDegree--;
-    V[j].inDegree--;
+    _V[i].outDegree--;
+    _V[j].inDegree--;
     return eBak;  
 }
 

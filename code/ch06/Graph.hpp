@@ -84,15 +84,17 @@ void Graph<Tv, Te>::bfs(int s) {
     int clock = 0;
     int v = s;
     do 
-        if(VStatus::UNDISCOVERED == status(v))
+        if(VStatus::UNDISCOVERED == status(v)){
             BFS(v, clock); 
+            status(v) = VStatus::SOURCE;
+        }
     while(s != (v = (++v%n)));
 }
 
 template<typename Tv, typename Te>
 void Graph<Tv, Te>::BFS(int v, int& clock) {
     Queue<int> Q;
-    status(v) = VStatus::SOURCE;
+    status(v) = VStatus::DISCOVERED;
     Q.enqueue(v);
     while(!Q.empty()) {
         int v = Q.dequeue();
@@ -110,3 +112,41 @@ void Graph<Tv, Te>::BFS(int v, int& clock) {
             status(v) = VStatus::VISITED;
     }
 }
+
+template<typename Tv, typename Te>
+void Graph<Tv, Te>::dfs(int s){
+    reset();
+    int clock = 0;
+    int v = s;
+    do
+    {
+        if(VStatus::UNDISCOVERED == status(v)){
+            DFS(v, clock);
+            status(v) = VStatus::SOURCE;
+        }
+            
+    } while (s != (v = (++v % n)));  
+}
+
+template<typename Tv, typename Te>
+void Graph<Tv, Te>::DFS(int v, int& clock) {
+    dTime(v) = ++clock;
+    status(v) = VStatus::DISCOVERED;
+    for(int u = firstNbr(v); -1 < u; u = nextNbr(v, u))
+        switch(status(u)){
+            case VStatus::UNDISCOVERED:
+                type(v, u) = EType::TREE;
+                parent(u) = v;
+                DFS(u, clock);
+                break;
+            case VStatus::DISCOVERED:
+                type(v, u) = EType::BACKWARD;
+                break;
+            default:
+                type(v, u) = (dTime(v) < dTime(u))?EType::FORWARD:EType::CROSS;
+                break;
+        }
+    status(v) = VStatus::VISITED;
+    fTime(v) = ++clock;
+}
+

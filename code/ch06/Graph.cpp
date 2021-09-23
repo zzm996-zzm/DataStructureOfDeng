@@ -5,24 +5,43 @@
 using std::cout;
 
 int main(){
-    std::ifstream is("./files/tinyCG.txt");
-    GraphMatrix<char, WrappedInt> graph(is, GType::GRAPH);
+    std::ifstream is("./files/tinyG.txt");
+    GraphMatrix<WrappedChar, WrappedInt> graph(is, GType::GRAPH);
 
-    print(graph);
     putchar('\n');
 
+    //bfs
+    std::cout << "BFS:  " << std::endl;
     graph.bfs(0);
-
     print(graph);
-    /*bfs
-    for(int v = 0; v < graph.n; v++){
-        cout << s << " to " << v << ": ";
-        if(bfs->marked(v))
-            for(int x: bfs->pathTo(v))
-                if(x == s) cout << x;
-                else cout << "-" << x;
-        cout << endl;
+    int n = graph.n;
+    for(int i = 0; i < n; i++){
+        List<size_t> path;
+        size_t pos = i;
+        while(pos != -1){
+            path.insertAsFirst(pos);
+            pos = graph.V()[pos].parent;
+        }
+        print(path);
     }
-    */
+    
+
+    
+    //dfs
+    std::cout << "DFS:  " << std::endl;
+    graph.dfs(0);
+    //print(graph);
+    n = graph.n;
+    for(int i = 0; i < n; i++){
+        List<size_t> path;
+        size_t pos = i;
+        while(pos != -1){
+            path.insertAsFirst(pos);
+            pos = graph.V()[pos].parent;
+        }
+        print(path);
+        //putchar('\n');
+    }
+    
     return 0;
 }
