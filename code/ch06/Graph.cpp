@@ -44,7 +44,7 @@ int main(int argc, char** argv){
     
     putchar('\n');
 
-    std::ifstream stream("./files/mediumG.txt");
+    std::ifstream stream("./files/tinyG.txt");
     GraphMatrix<WrappedChar, WrappedInt> tinyG(stream, GType::GRAPH);
 
     std::cout << "TinyG:  " << std::endl;
