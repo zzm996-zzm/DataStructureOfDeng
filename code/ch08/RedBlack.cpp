@@ -2,7 +2,6 @@
 #include <unistd.h>
 
 int main(){
-
     system("clear");
     RedBlack<int> tree;
     int temp;
